@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
 from ev3dev.ev3 import *
+from seguirlinha import *
 from time import sleep
 
 
 Class Movimento:
+
+   # _l = LargerMotor('OutA')
+   # _r = LargerMotor('OutD')
+    _sl = SeguiLinha(2);
+
     def __init__(self, posicao, destino, velicidade):
         self.poscao = posicao
         self.destino = destino
         self.velocidade = velicidade
-        l = LargerMotor('OutA')
-        r = LargerMotor('OutD')
-        sl = SeguiLinha(2);
 
     def setFrente():
         while(seguirLinha()):
