@@ -1,37 +1,137 @@
-#!/usr/bin/env python3
 from ev3dev.ev3 import *
-from seguirlinha import *
 from time import sleep
 
+class Movimento:
 
-Class Movimento:
-
-   # _l = LargerMotor('OutA')
-   # _r = LargerMotor('OutD')
-    _sl = SeguiLinha(2);
-
-    def __init__(self, posicao, destino, velicidade):
-        self.poscao = posicao
-        self.destino = destino
-        self.velocidade = velicidade
-
-    def setFrente():
-        while(seguirLinha()):
-            l.run_forever(speed_sp=velocidade)
-            r.run_forever(speed_sp=velocidade)
-
-    def setDireita():
-        l.run_forever(speed_sp=velocidade)
-
-    def setEsquerda():
-        r.run_forever(speed_sp=velocidade)
-
-    def setRetornar():
+	def __init__(self, a, b, velocidade):
+		self.velocidade = velocidade
+		self.l=LargeMotor(a)
+		self.r=LargeMotor(b)
+		self.cl=ColorSensor()	
+		self.colors=('unknown','black','blue','green','yellow','red','white','brown')
 
 
-    def setVelocidade(self, setV):
-        self.velocidade = setV
+	def setVol(self):
+		return self.velocidade
 
-    def setParar():
-        r.stop(stop_action="hold")
-        l.stop(stop_action="hold")
+	def setFrente(self):
+		self.cl.mode='COL-COLOR'
+		if self.colors[self.cl.value()] == "green" or self.colors[self.cl.value()] == "yellow" or  self.colors[self.cl.value()] == "blue": 
+			while self.colors[self.cl.value()] == "green" or self.colors[self.cl.value()] == "yellow" or  self.colors[self.cl.value()] == "blue": 
+				self.r.run_forever(speed_sp=self.velocidade)
+				self.l.run_forever(speed_sp=self.velocidade)
+			else:
+				self.setParar()
+## Colocar o resto do codico no else
+			
+		if  self.colors[self.cl.value()] == "unknown":
+			while self.colors[self.cl.value()] != "black":
+				self.r.run_forever(speed_sp=self.velocidade)
+				 
+
+		while self.colors[self.cl.value()] != "green":
+			while self.colors[self.cl.value()] == "black":
+				self.r.run_forever(speed_sp=self.velocidade/2)
+				self.l.run_forever(speed_sp=self.velocidade)
+			
+			while self.colors[self.cl.value()] == "white":
+				self.r.run_forever(speed_sp=self.velocidade)
+				self.l.run_forever(speed_sp=self.velocidade/2)
+
+			if self.colors[self.cl.value()] == "yellow":
+				self.l.run_forever(speed_sp=self.velocidade)
+				self.r.run_forever(speed_sp=self.velocidade)
+				sleep(0.2)
+				break		
+
+			if self.colors[self.cl.value()] == "blue":
+				self.l.run_forever(speed_sp=self.velocidade)
+				self.r.run_forever(speed_sp=self.velocidade)
+				sleep(0.1)
+				break		
+
+		else:
+			self.l.run_forever(speed_sp=self.velocidade)
+			self.r.run_forever(speed_sp=self.velocidade)
+			sleep(0.2)		
+
+		self.setParar()
+
+	def setEsquerda(self):
+		self.cl.mode='COL-COLOR'
+		while self.colors[self.cl.value()]== "green":
+			self.l.run_forever(speed_sp=self.velocidade)
+			self.r.run_forever(speed_sp=self.velocidade)
+		else:
+			sleep(0.1)
+			self.setParar()
+		
+		while self.colors[self.cl.value()] == "white":
+			while self.colors[self.cl.value()] != "black":
+				self.r.run_forever(speed_sp=self.velocidade)
+	
+		while self.colors[self.cl.value()] == "black":
+			self.r.run_forever(speed_sp=self.velocidade)
+			self.l.run_forever(speed_sp=-self.velocidade)
+
+
+		while self.colors[self.cl.value()] != "black":
+			self.r.run_forever(speed_sp=self.velocidade)
+			self.l.run_forever(speed_sp=-self.velocidade)
+
+	#	else:
+	#		self.l.run_forever(speed_sp=self.velocidade)
+
+		self.setParar()
+
+		self.setFrente()
+		
+
+	def setDireita(self):
+		self.cl.mode='COL-COLOR'
+		while self.colors[self.cl.value()]== "green":
+			self.l.run_forever(speed_sp=self.velocidade)
+			self.r.run_forever(speed_sp=self.velocidade)
+		else:
+			self.setParar()
+		
+		while self.colors[self.cl.value()] == "black":
+			self.l.run_forever(speed_sp=self.velocidade)
+
+
+		while self.colors[self.cl.value()] != "black":
+			self.l.run_forever(speed_sp=self.velocidade)
+		else:
+			self.l.run_forever(speed_sp=self.velocidade)
+
+		self.setParar()
+
+		self.setFrente()
+		
+
+	def setRetornar(self):
+		self.cl.mode='COL-COLOR'
+		while self.colors[self.cl.value()] == "green":
+			self.l.run_forever(speed_sp=-self.velocidade)
+			self.r.run_forever(speed_sp=-self.velocidade)
+
+		sleep(0.1)
+		self.setParar()
+	
+		while self.colors[self.cl.value()] == "black":
+#			self.r.run_forever(speed_sp=self.velocidade)
+			self.l.run_forever(speed_sp=self.velocidade)
+
+		while self.colors[self.cl.value()] != "black":
+#			self.r.run_forever(speed_sp=self.velocidade)
+			self.l.run_forever(speed_sp=self.velocidade)
+
+		self.setParar()
+		self.setFrente()
+	
+	def setVelocidade(self, setV):
+		self.velocidade = setV
+
+	def setParar(self):
+		self.r.stop(stop_action="hold")
+		self.l.stop(stop_action="hold")
