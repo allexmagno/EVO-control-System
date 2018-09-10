@@ -1,4 +1,4 @@
-![LogoIFSCCampusSJ.png](LogoIFSCCampusSJ.png)
+![LogoIFSCCampusSJ.png](LogoIFSCCampusSJ.png = 300x180)
 ## Engenharia de Telecomunicações
 ### Projeto Integrador 2018-2
 
@@ -13,6 +13,6 @@ O projeto consistem em desenvolver um robô seguidor de linhas para realizar
 caças em um tabuleiro 6X6; Um Sistema surpevisor que irá comunicar com este robô e
 um Sistema Autidor que irá ditar as regras do jogo.
 
-Os robô utilizados foram os
-(https://www.lego.com/en-us/mindstorms/products/mindstorms-ev3-31313)[LEGOs Mindstroms EV3]
+Os robô utilizados foram os [LEGOs Mindstroms
+EV3](https://www.lego.com/en-us/mindstorms/products/mindstorms-ev3-31313)
 
