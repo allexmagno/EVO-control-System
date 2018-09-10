@@ -1,5 +1,5 @@
 from movimento import *
-
+import threading
 
 robot = Movimento('outA','outD',200)
 
@@ -15,12 +15,12 @@ while (True):
 		robot.setParar()
 		robot.setEsquerda()
 
-	if op == "d":	
+	if op == "d":
 		robot.setParar()
-		robot.setDireita()
+		t1 = threading.Thread(target=robot.setDireita())
 	
 	if op == "w":	
-		robot.setFrente()
+		t2 = threading.Thread(target=robot.setFrente())
 
 	if op== "s":
-		robot.setRetornar()
+		t3 = threading.Thread(robot.setRetornar())
