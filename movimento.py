@@ -1,7 +1,6 @@
 from ev3dev.ev3 import *
 from time import sleep
 
-
 class Movimento:
     def __init__(self, a, b, velocidade):
         self.velocidade = velocidade
@@ -41,7 +40,7 @@ class Movimento:
             if self.colors[self.cl.value()] == "yellow":
                 self.l.run_forever(speed_sp=self.velocidade)
                 self.r.run_forever(speed_sp=self.velocidade)
-                sleep(0.2)
+                sleep(0.1)
                 break
 
             if self.colors[self.cl.value()] == "blue":
@@ -53,7 +52,7 @@ class Movimento:
         else:
             self.l.run_forever(speed_sp=self.velocidade)
             self.r.run_forever(speed_sp=self.velocidade)
-            sleep(0.2)
+            sleep(0.1)
 
         self.setParar()
 
@@ -62,9 +61,9 @@ class Movimento:
         while self.colors[self.cl.value()] != "black":
             self.l.run_forever(speed_sp=-self.velocidade/2)
             self.r.run_forever(speed_sp=self.velocidade)
-        else:
+        #else:
             #sleep(0.1)
-            self.setParar()
+            #self.setParar()
 
         self.setParar()
 
@@ -74,9 +73,9 @@ class Movimento:
         self.cl.mode = 'COL-COLOR'
         while self.colors[self.cl.value()] == "green":
             self.l.run_forever(speed_sp=self.velocidade)
-            self.r.run_forever(speed_sp=self.velocidade)
+            self.r.run_forever(speed_sp=self.velocidade/2)
         else:
-            self.setParar()
+            self.r.stop(stop_action="hold")
 
         while self.colors[self.cl.value()] == "black":
             self.l.run_forever(speed_sp=self.velocidade)
@@ -87,7 +86,7 @@ class Movimento:
         else:
             self.l.run_forever(speed_sp=self.velocidade)
 
-        self.setParar()
+        #self.setParar()
 
         self.setFrente()
 
@@ -95,18 +94,18 @@ class Movimento:
         self.cl.mode = 'COL-COLOR'
         while self.colors[self.cl.value()] == "green":
             self.l.run_forever(speed_sp=-self.velocidade)
-            self.r.run_forever(speed_sp=-self.velocidade)
+           #self.r.run_forever(speed_sp=-self.velocidade/2)
 
-        sleep(0.1)
-        self.setParar()
+        #sleep(0.1)
+        #self.setParar()
 
         while self.colors[self.cl.value()] == "black":
             #			self.r.run_forever(speed_sp=self.velocidade)
-            self.l.run_forever(speed_sp=self.velocidade)
+            self.l.run_forever(speed_sp=-self.velocidade)
 
         while self.colors[self.cl.value()] != "black":
-            #			self.r.run_forever(speed_sp=self.velocidade)
-            self.l.run_forever(speed_sp=self.velocidade)
+            #self.setParar()
+            self.l.run_forever(speed_sp=-self.velocidade)
 
         self.setParar()
         self.setFrente()
