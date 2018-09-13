@@ -23,7 +23,7 @@ class Movimento:
                 self.l.run_forever(speed_sp=self.velocidade)
             else:
                 self.setParar()
-            ## Colocar o resto do codico no else
+                ## Colocar o resto do codico no else
 
         if self.colors[self.cl.value()] == "unknown":
             while self.colors[self.cl.value()] != "black":
@@ -59,27 +59,12 @@ class Movimento:
 
     def setEsquerda(self):
         self.cl.mode = 'COL-COLOR'
-        while self.colors[self.cl.value()] == "green":
-            self.l.run_forever(speed_sp=self.velocidade)
+        while self.colors[self.cl.value()] != "black":
+            self.l.run_forever(speed_sp=-self.velocidade/2)
             self.r.run_forever(speed_sp=self.velocidade)
         else:
-            sleep(0.1)
+            #sleep(0.1)
             self.setParar()
-
-        while self.colors[self.cl.value()] == "white":
-            while self.colors[self.cl.value()] != "black":
-                self.r.run_forever(speed_sp=self.velocidade)
-
-        while self.colors[self.cl.value()] == "black":
-            self.r.run_forever(speed_sp=self.velocidade)
-            self.l.run_forever(speed_sp=-self.velocidade)
-
-        while self.colors[self.cl.value()] != "black":
-            self.r.run_forever(speed_sp=self.velocidade/2)
-            self.l.run_forever(speed_sp=-self.velocidade)
-
-        #	else:
-        #		self.l.run_forever(speed_sp=self.velocidade)
 
         self.setParar()
 
@@ -98,6 +83,7 @@ class Movimento:
 
         while self.colors[self.cl.value()] != "black":
             self.l.run_forever(speed_sp=self.velocidade)
+
         else:
             self.l.run_forever(speed_sp=self.velocidade)
 
