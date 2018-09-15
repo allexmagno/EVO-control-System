@@ -2,17 +2,13 @@ from autonomo import *
 import threading
 
 robot = Movimento('outA', 'outD', 200)
-
-c1 = Coordenadas(0, 0, 'L')
-c2 = Coordenadas(0, 0, 'L')
-c3 = Coordenadas(6, 6, 'O')
-s = []
-
-aut = Autonomo(c1, c2, c3, s, robot)
+colors = ('unknown', 'black', 'blue', 'green', 'yellow', 'red', 'white', 'brown')
+sc = ColorSensor()
+sc.mode = 'COL-COLOR'
 
 
 def setAutonomo():
-    s = int(input("1 (Ne), 2 (Se), 3 (No), 4 (Ne)"))
+    s = int(input("1 (Ne), 2 (Se), 3 (No), 4 (So)\n"))
     t1 = int(input("x: "))
     t2 = int(input("y: "))
     t3 = int(input("nav: "))
@@ -20,13 +16,11 @@ def setAutonomo():
     if s == 1:
         aut.setNe(t1, t2, t3)
     elif s == 2:
-        aut.setNe(t1, t2, t3)
+        aut.setSe(t1, t2, t3)
     elif s == 3:
-        aut.setNe(t1, t2, t3)
+        aut.setNo(t1, t2, t3)
     elif s == 4:
-        aut.setNe(t1, t2, t3)
-
-    print(aut.getCoordenada())
+        aut.setSo(t1, t2, t3)
 
 
 def setManual():
@@ -35,7 +29,7 @@ def setManual():
     op = input("digite uma opcao:")
 
     if op == "a":
-        a =threading.Thread(target=robot.setEsquerda)
+        a = threading.Thread(target=robot.setEsquerda)
         a.start()
 
     if op == "d":
@@ -54,7 +48,33 @@ def setManual():
         spc.start()
 
 
+c1 = Coordenadas(0, 0, "L")
+c2 = Coordenadas(0, 0, "L")
+c3 = Coordenadas(6, 6, 'O')
+s = []
+aut = Autonomo(c1, c2, c3, s, robot)
+
 while (True):
+
+    print("Posicao atual: " + aut.getCoordenada())
+    corrigir = input("Corrigir posicao? s ou n: ")
+    if corrigir == "s":
+        if colors[sc.value()] == "yellow":
+            dir = input("Posicao inicial (0,0). informe direcao: ")
+            c1 = Coordenadas(0, 0, dir)
+
+        elif colors[sc.value()] == "blue":
+            dir = input("Posição inicial (6,6). Informe direcao: ")
+            c1 = Coordenadas(6, 6, dir)
+        else:
+            x = int(input("X atual: "))
+            y = int(input("Y atual: "))
+            dir = input("Direcao: ")
+            c1 = Coordenadas(x, y, dir)
+
+
+        aut = Autonomo(c1, c2, c3, s, robot)
+
     a = input("(1) Autono \n(2) Manual:")
     if a == "2":
         setManual()

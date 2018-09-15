@@ -168,7 +168,7 @@ class Autonomo:
                     self.coordAtual.setY(self.coordAtual.getY() + 1)
 
     # Caso (x+,y-)
-    def setNo(self, x, y, nav):
+    def setSe(self, x, y, nav):
         if nav == 2:
             if self.coordAtual.getOr() == 'S':
                 while y < 0:
@@ -264,7 +264,7 @@ class Autonomo:
                     self.coordAtual.setY(self.coordAtual.getY() + 1)
 
     # Caso (x-, y+)
-    def setSe(self, x, y, nav):
+    def setNo(self, x, y, nav):
         if nav == 2:
             if self.coordAtual.getOr() == 'N':
                 while y > 0:
@@ -303,8 +303,8 @@ class Autonomo:
                     self.coordAtual.setY(self.coordAtual.getY() + 1)
 
             if x < 0:
-                self.mover.setEsquerda()
-                self.coordAtual.setOr('N')
+                self.mover.setDireita()
+                self.coordAtual.setOr('O')
                 self.coordAtual.setX(self.coordAtual.getX() - 1)
                 x = x + 1
                 while x < 0:
@@ -350,7 +350,7 @@ class Autonomo:
                     self.coordAtual.setX(self.coordAtual.getX() - 1)
 
             if y > 0:
-                self.mover.setDireita()
+                self.mover.setEsquerda()
                 self.coordAtual.setOr('N')
                 self.coordAtual.setY(self.coordAtual.getY() + 1)
                 y = y - 1
@@ -447,7 +447,7 @@ class Autonomo:
 
             if y < 0:
                 self.mover.setEsquerda()
-                self.coordAtual.setOr('O')
+                self.coordAtual.setOr('S')
                 self.coordAtual.setY(self.coordAtual.getY() - 1)
                 y = y + 1
                 while y < 0:
