@@ -47,12 +47,13 @@ def setManual():
         spc = threading.Thread(target=robot.setParar)
         spc.start()
 
+def exe():
+    print(aut.executar())
 
 c1 = Coordenadas(0, 0, "L")
 c2 = Coordenadas(0, 0, "L")
 c3 = Coordenadas(6, 6, 'O')
-s = [Coordenadas(3,5," "), Coordenadas(5,5, " "), Coordenadas(2,2, " "), Coordenadas(1,0, " "), Coordenadas(6,6, " ")]
-print (len(s))
+s = [Coordenadas(0,6," "),Coordenadas(2,1," "),Coordenadas(4,0," "),Coordenadas(6,1," "),Coordenadas(3,5," "), Coordenadas(5,5, " "), Coordenadas(2,2, " "), Coordenadas(1,0, " "), Coordenadas(6,6, " ")]
 aut = Autonomo(c1, c2, c3, s, robot)
 
 while (True):
@@ -82,4 +83,5 @@ while (True):
     elif a == "1":
         setAutonomo()
     elif a == "3":
-        print(aut.executar())
+        r = threading.Thread(target = exe)
+        r.start()

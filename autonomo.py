@@ -49,8 +49,8 @@ class Autonomo:
              #       novo_o = input("Orientação (N,S,L,O): ")
              #       self.setCoordenada(Coordenadas(novo_x,novo_y,novo_o))
 
-            del self.sequencia[0];
-            print ("caca encontrada "+ self.getCoordenada())
+
+            print ("CoordAtual "+ self.getCoordenada())
         return "Fim de jogo! \n Total de cacas encontradas: {}".format(self.cacasEncontradas)
 
 
@@ -59,35 +59,50 @@ class Autonomo:
         i = 0
         j = 0
 
+        x_atual = self.coordAtual.getX()
+        y_atual = self.coordAtual.getY()
+
+        aux = (((self.sequencia[0].getX() - x_atual)** 2) + (self.sequencia[0].getY() - y_atual) ** 2) ** (1 / 2)
         while i < (len(self.sequencia)):
-            if(self.sequencia[i] < self.coordAtual):
+
+            if aux > (((self.sequencia[i].getX() - x_atual)**2) + (self.sequencia[i].getY() - y_atual)**2)**(1/2):
+                aux = (((self.sequencia[i].getX() - x_atual)**2) + (self.sequencia[i].getY() - y_atual)**2)**(1/2)
                 j = i
             i = i + 1
 
         xc = self.sequencia[j].getX() - self.coordAtual.getX()
         xy = self.sequencia[j].getY() - self.coordAtual.getY()
+
         print(xc)
         print(xy)
         if(xc > 0 and xy > 0):
+            print ("Ne")
             self.setNe(xc,xy,1)
         if(xc > 0 and xy < 0):
+            print ("Se")
             self.setSe(xc,xy,1)
         if(xc < 0 and xy > 0):
+            print ("No")
             self.setNo(xc,xy,1)
         if (xc < 0 and xy < 0):
+            print ("So")
             self.setSo(xc,xy,1)
         if(xc == 0):
             if(xy > 0):
+                print ("N")
                 self.setNe(xc,xy,1)
             if(xy < 0):
+                print ("S")
                 self.setSe(xc,xy,1)
         if(xy == 0):
             if(xc > 0):
+                print ("L")
                 self.setNe(xc,xy,1)
             if(xc < 0):
+                print ("O")
                 self.setSo(xc,xy,1)
         print ("caca aqui "+self.sequencia[j].toString())
-
+        del self.sequencia[j]
 
     # Estrategia p/ inimigo perto
     def setEstrategia_2(self):
