@@ -51,7 +51,8 @@ def setManual():
 c1 = Coordenadas(0, 0, "L")
 c2 = Coordenadas(0, 0, "L")
 c3 = Coordenadas(6, 6, 'O')
-s = []
+s = [Coordenadas(3,5," "), Coordenadas(5,5, " "), Coordenadas(2,2, " "), Coordenadas(1,0, " "), Coordenadas(6,6, " ")]
+print (len(s))
 aut = Autonomo(c1, c2, c3, s, robot)
 
 while (True):
@@ -75,8 +76,10 @@ while (True):
 
         aut = Autonomo(c1, c2, c3, s, robot)
 
-    a = input("(1) Autono \n(2) Manual:")
+    a = input("(1) Autono \n(2) Manual: \n(3) Autonomo.exe")
     if a == "2":
         setManual()
     elif a == "1":
         setAutonomo()
+    elif a == "3":
+        print(aut.executar())

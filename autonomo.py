@@ -29,39 +29,64 @@ class Autonomo:
     def executar(self):
 
         # verifica se possui caças definida no jogo
-        if self.sequencia == 0:
-            return "Lista de caças não definida."
+        if len(self.sequencia) == 0:
+            return "Lista de cacas nao definida."
 
-        while self.sequencia != 0:
-
+        while len(self.sequencia) > 0:
             self.sequencia.sort()
 
-            if self.coordAdv < self.coordAtual:
-                self.setEstrategia_1()
-            else:
-                self.setEstrategia_2()
+            self.setEstrategia_1()
 
-            if self.setValidar():
-                self.cacasEncontradas = self.cacasEncontradas + 1
-            else:
-                print("Caça não vadidada pelo SS! \n")
-                print("Verifique coordenadas: {}.\n".format(self.coordAtual.toString))
-                verifica = input("Esta é sua coordenada atual?\n(s) Sim\n(n)Não\n")
-                if verifica == "n":
-                    novo_x = input("Valor de x: ")
-                    novo_y = input("Valor de y: ")
-                    novo_o = input("Orientação (N,S,L,O): ")
-                    self.setCoordenada(Coordenadas(novo_x,novo_y,novo_o))
+            #if self.setValidar():
+            #    self.cacasEncontradas = self.cacasEncontradas + 1
+            #else:
+            #    print("Caça não vadidada pelo SS! \n")
+            #    print("Verifique coordenadas: {}.\n".format(self.coordAtual.toString))
+            #    verifica = input("Esta é sua coordenada atual?\n(s) Sim\n(n)Não\n")
+            #    if verifica == "n":
+            #        novo_x = input("Valor de x: ")
+            #        novo_y = input("Valor de y: ")
+             #       novo_o = input("Orientação (N,S,L,O): ")
+             #       self.setCoordenada(Coordenadas(novo_x,novo_y,novo_o))
 
-        return "Fim de jogo! \n Total de caças encontradas: {}".format(self.cacasEncontradas)
+            del self.sequencia[0];
+            print ("caca encontrada "+ self.getCoordenada())
+        return "Fim de jogo! \n Total de cacas encontradas: {}".format(self.cacasEncontradas)
 
 
     # Estratigia p/ quando inimigo longe
     def setEstrategia_1(self):
-        #
-        # codigo (...)
-        #
-        pass
+        i = 0
+        j = 0
+
+        while i < (len(self.sequencia)):
+            if(self.sequencia[i] < self.coordAtual):
+                j = i
+            i = i + 1
+
+        xc = self.sequencia[j].getX() - self.coordAtual.getX()
+        xy = self.sequencia[j].getY() - self.coordAtual.getY()
+        print(xc)
+        print(xy)
+        if(xc > 0 and xy > 0):
+            self.setNe(xc,xy,1)
+        if(xc > 0 and xy < 0):
+            self.setSe(xc,xy,1)
+        if(xc < 0 and xy > 0):
+            self.setNo(xc,xy,1)
+        if (xc < 0 and xy < 0):
+            self.setSo(xc,xy,1)
+        if(xc == 0):
+            if(xy > 0):
+                self.setNe(xc,xy,1)
+            if(xy < 0):
+                self.setSe(xc,xy,1)
+        if(xy == 0):
+            if(xc > 0):
+                self.setNe(xc,xy,1)
+            if(xc < 0):
+                self.setSo(xc,xy,1)
+        print ("caca aqui "+self.sequencia[j].toString())
 
 
     # Estrategia p/ inimigo perto
