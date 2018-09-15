@@ -75,7 +75,7 @@ while (True):
 
         aut = Autonomo(c1, c2, c3, s, robot)
 
-    a = input("(1) Autono \n(2) Manual:")
+    a = input("(1) Autono \n(2) Manual\n")
     if a == "2":
         setManual()
     elif a == "1":
