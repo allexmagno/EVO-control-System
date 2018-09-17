@@ -55,22 +55,23 @@ s = []
 aut = Autonomo(c1, c2, c3, s, robot)
 
 while (True):
+    if colors[sc.value()] == "yellow":
+        dir = input("Posicao inicial (0,0). informe direcao: ")
+        c1 = Coordenadas(0, 0, dir)
+
+    if colors[sc.value()] == "blue":
+        dir = input("Posicao inicial (6,6). informe direcao: ")
+        c1 = Coordenadas(6, 6, dir)
+
 
     print("Posicao atual: " + aut.getCoordenada())
     corrigir = input("Corrigir posicao? s ou n: ")
     if corrigir == "s":
-        if colors[sc.value()] == "yellow":
-            dir = input("Posicao inicial (0,0). informe direcao: ")
-            c1 = Coordenadas(0, 0, dir)
-
-        elif colors[sc.value()] == "blue":
-            dir = input("Posição inicial (6,6). Informe direcao: ")
-            c1 = Coordenadas(6, 6, dir)
-        else:
-            x = int(input("X atual: "))
-            y = int(input("Y atual: "))
-            dir = input("Direcao: ")
-            c1 = Coordenadas(x, y, dir)
+        x = int(input("X atual: "))
+        y = int(input("Y atual: "))
+        dir = input("Direcao: ")
+        print("Posicao atual ({},{},{})".format(x,y,dir))
+        c1 = Coordenadas(x, y, dir)
 
 
         aut = Autonomo(c1, c2, c3, s, robot)
