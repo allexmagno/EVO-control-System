@@ -29,29 +29,27 @@ def setManual():
     op = input("digite uma opcao:")
 
     if op == "a":
-        a = threading.Thread(target=robot.setEsquerda)
-        a.start()
+        robot.setEsquerda()
 
     if op == "d":
-        d = threading.Thread(target=robot.setDireita)
-        d.start()
+        robot.setDireita()
+
     if op == "w":
-        w = threading.Thread(target=robot.setFrente)
-        w.start()
+        robot.setFrente()
 
     if op == "s":
-        s = threading.Thread(target=robot.setRetornar)
-        s.start()
+        robot.setRetornar()
 
     if op == chr(32):
-        spc = threading.Thread(target=robot.setParar)
-        spc.start()
+        robot.setParar()
 
+def exe():
+    print(aut.executar())
 
 c1 = Coordenadas(0, 0, "L")
 c2 = Coordenadas(0, 0, "L")
 c3 = Coordenadas(6, 6, 'O')
-s = []
+s = [Coordenadas(0,6," "),Coordenadas(2,1," "),Coordenadas(4,0," "),Coordenadas(6,1," "),Coordenadas(3,5," "), Coordenadas(5,5, " "), Coordenadas(2,2, " "), Coordenadas(1,0, " "), Coordenadas(6,6, " ")]
 aut = Autonomo(c1, c2, c3, s, robot)
 
 while (True):
@@ -76,8 +74,15 @@ while (True):
 
         aut = Autonomo(c1, c2, c3, s, robot)
 
-    a = input("(1) Autono \n(2) Manual\n")
+    a = input("(1) Autono \n(2) Manual: \n(3) Autonomo.exe")
     if a == "2":
-        setManual()
+        m = threading.Thread(target=setManual)
+        m.start()
+
     elif a == "1":
-        setAutonomo()
+        a = threading.Thread(target=setAutonomo)
+        a.start()
+
+    elif a == "3":
+        r = threading.Thread(target=exe)
+        r.start()
