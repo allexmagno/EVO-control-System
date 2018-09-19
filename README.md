@@ -1,5 +1,5 @@
 
-<img src="LogoIFSCCampusSJ.png" alt="IFSC" width="230" height="150"/>
+<img src="imagens/LogoIFSCCampusSJ.png" alt="IFSC" width="230" height="150"/>
 
 ## Engenharia de Telecomunicações
 ### Projeto Integrador 2018-2
