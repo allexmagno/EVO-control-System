@@ -1,3 +1,4 @@
+from movimento import *
 
 class Navegacao:
 
@@ -6,7 +7,7 @@ class Navegacao:
         self.mover = robo
 
     def getCoord(self):
-        return self.coordAtual
+        return self.coordAtual.toString()
 
     def setCoord(self, coord):
         self.coordAtual = coord
@@ -393,5 +394,3 @@ class Navegacao:
                     self.mover.setFrente()
                     y = y + 1
                     self.coordAtual.setY(self.coordAtual.getY() - 1)
-
-        return self.getCoord()
