@@ -1,13 +1,6 @@
 from movimento import *
-<<<<<<< HEAD
-
-=======
-from coordenadas import *
-<<<<<<< HEAD
->>>>>>> cc7772903736940fbd957847836f18a133a99c95
-=======
 from quadrante import *
->>>>>>> dd8e398ededae5e2e89c0be926ede4930c2b2885
+
 
 class Autonomo:
     def __init__(self, coordAtual, coordInicial, coordAdv, sequencia, robo):
@@ -15,12 +8,12 @@ class Autonomo:
         self.coordInicial = coordInicial
         self.sequencia = sequencia
         self.coordAdv = coordAdv
-<<<<<<< HEAD
+
         self.mover = Movimento('outA', 'outD', 200)
-=======
+
         self.mover = robo
         self.cacasEncontradas = 0
->>>>>>> cc7772903736940fbd957847836f18a133a99c95
+
 
     def setCoordenada(self, coordenada):
         self.coordAtual = coordenada
@@ -37,10 +30,11 @@ class Autonomo:
     def setValidar(self):
         return self.coordAtual.toString()
 
-<<<<<<< HEAD
-=======
-    # Metodo principal onde ira verificar qual a melhor estrategia naquele dado momento
->>>>>>> cc7772903736940fbd957847836f18a133a99c95
+    def calculaDistancia(self, c1, c2):
+        aux = (((c1.getX() - c2.getX()) ** 2) + (c1.getY() - c2.getY()) ** 2) ** (1 / 2)
+        return aux
+
+
     def executar(self):
         a = quadrante(0,self.sequencia)
         a.dividirCacas()
@@ -50,16 +44,15 @@ class Autonomo:
             return "Lista de cacas nao definida."
 
         while len(self.sequencia) > 0:
-<<<<<<< HEAD
+
             self.sequencia.sort()
-<<<<<<< HEAD
+
             i = 0
             while i in range(len(self.sequencia)):
                 mx = self.sequencia(0).getX - self.coordAtual.getX
                 my = self.sequencia(0).getY - self.coordAtual.getY
 
-=======
-=======
+
             if(len(a.quadB) >= len(a.quadC)):
                 self.setEstrategia_Raio(a.quadB)
                 if(len(a.quadIgnorado) > len(a.quadA)):
@@ -97,7 +90,7 @@ class Autonomo:
 
             #print ("CoordAtual "+ self.getCoordenada())
         return "Fim de jogo! \n Total de cacas encontradas: {}".format(self.cacasEncontradas)
->>>>>>> dd8e398ededae5e2e89c0be926ede4930c2b2885
+
 
     def setEstrategia_Raio(self,listaQuadrante):
         i = 0
@@ -599,7 +592,7 @@ class Autonomo:
                     self.mover.setFrente()
                     y = y + 1
                     self.coordAtual.setY(self.coordAtual.getY() - 1)
->>>>>>> cc7772903736940fbd957847836f18a133a99c95
+
 
     #caso (x+, y+)
     def setNordeste(self, x, y, orientacao, nav):
@@ -721,3 +714,4 @@ class Autonomo:
 
     # Caso (x-, y-)
     def setSudoeste(self, x, y, orientacao):
+      pass
