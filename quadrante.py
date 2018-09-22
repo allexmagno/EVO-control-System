@@ -3,7 +3,7 @@
 class quadrante():
     def __init__(self,quadranteInicial,sequencia):
         self.quadranteInicial = quadranteInicial
-        self.listSeq = sequencia
+        self.sequencia = sequencia
         self.quadA = []
         self.quadB = []
         self.quadC = []

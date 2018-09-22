@@ -47,26 +47,18 @@ class Autonomo:
 
         while len(self.sequencia) > 0:
 
-            self.sequencia.sort()
-
-            i = 0
-            while i in range(len(self.sequencia)):
-                mx = self.sequencia(0).getX - self.coordAtual.getX
-                my = self.sequencia(0).getY - self.coordAtual.getY
-
-
             if(len(a.quadB) >= len(a.quadC)):
-                self.setEstrategia_Raio(a.quadB)
+                self.setEstrategia(a.quadB)
                 if(len(a.quadIgnorado) > len(a.quadA)):
-                    self.setEstrategia_Raio(a.quadIgnorado)
+                    self.setEstrategia(a.quadIgnorado)
                 else:
-                    self.setEstrategia_Raio(a.quadA)
+                    self.setEstrategia(a.quadA)
             else:
-                self.setEstrategia_Raio(a.quadC)
+                self.setEstrategia(a.quadC)
                 if (len(a.quadIgnorado) > len(a.quadA)):
-                    self.setEstrategia_Raio(a.quadIgnorado)
+                    self.setEstrategia(a.quadIgnorado)
                 else:
-                    self.setEstrategia_Raio(a.quadA)
+                    self.setEstrategia(a.quadA)
 
         #while len(self.sequencia) > 0:
             #self.sequencia.sort()
@@ -94,18 +86,19 @@ class Autonomo:
         return "Fim de jogo! \n Total de cacas encontradas: {}".format(self.cacasEncontradas)
 
 
-    def setEstrategia_Raio(self,listaQuadrante):
+    def setEstrategia(self,listaQuadrante):
         i = 0
         j = 0
 
         x_atual = self.coordAtual.getX()
         y_atual = self.coordAtual.getY()
 
-        aux = (((listaQuadrante.getX() - x_atual) ** 2) + (listaQuadrante.getY() - y_atual) ** 2) ** (1 / 2)
+        aux = (((listaQuadrante[i].getX() - x_atual) ** 2) + (listaQuadrante[i].getY() - y_atual) ** 2) ** (1 / 2)
+
         while i < (len(listaQuadrante)):
 
-            if aux > (((listaQuadrante.getX() - x_atual)**2) + (listaQuadrante.getY() - y_atual)**2)**(1/2):
-                aux = (((listaQuadrante.getX() - x_atual)**2) + (listaQuadrante.getY() - y_atual)**2)**(1/2)
+            if aux > (((listaQuadrante[i].getX() - x_atual)**2) + (listaQuadrante[i].getY() - y_atual)**2)**(1/2):
+                aux = (((listaQuadrante[i].getX() - x_atual)**2) + (listaQuadrante[i].getY() - y_atual)**2)**(1/2)
                 j = i
             i = i + 1
 
@@ -116,30 +109,30 @@ class Autonomo:
         print(xy)
         if(xc > 0 and xy > 0):
             print ("Ne")
-            self.setNe(xc,xy,1)
+            self.nav.setNe(xc,xy,1)
         if(xc > 0 and xy < 0):
             print ("Se")
-            self.setSe(xc,xy,1)
+            self.nav.setSe(xc,xy,1)
         if(xc < 0 and xy > 0):
             print ("No")
-            self.setNo(xc,xy,1)
+            self.nav.setNo(xc,xy,1)
         if (xc < 0 and xy < 0):
             print ("So")
-            self.setSo(xc,xy,1)
+            self.nav.setSo(xc,xy,1)
         if(xc == 0):
             if(xy > 0):
                 print ("N")
-                self.setNe(xc,xy,1)
+                self.nav.setNe(xc,xy,1)
             if(xy < 0):
                 print ("S")
-                self.setSe(xc,xy,1)
+                self.nav.setSe(xc,xy,1)
         if(xy == 0):
             if(xc > 0):
                 print ("L")
-                self.setNe(xc,xy,1)
+                self.nav.setNe(xc,xy,1)
             if(xc < 0):
                 print ("O")
-                self.setSo(xc,xy,1)
+                self.nav.setSo(xc,xy,1)
         print ("caca aqui "+self.sequencia[j].toString())
 
         iterador = 0
@@ -150,63 +143,3 @@ class Autonomo:
                 break
             iterador = iterador + 1
         del listaQuadrante[j]
-
-
-
-
-    # Estratigia p/ quando inimigo longe
-    def setEstrategia_1(self):
-        i = 0
-        j = 0
-
-        x_atual = self.coordAtual.getX()
-        y_atual = self.coordAtual.getY()
-
-        aux = (((self.sequencia[0].getX() - x_atual)** 2) + (self.sequencia[0].getY() - y_atual) ** 2) ** (1 / 2)
-        while i < (len(self.sequencia)):
-
-            if aux > (((self.sequencia[i].getX() - x_atual)**2) + (self.sequencia[i].getY() - y_atual)**2)**(1/2):
-                aux = (((self.sequencia[i].getX() - x_atual)**2) + (self.sequencia[i].getY() - y_atual)**2)**(1/2)
-                j = i
-            i = i + 1
-
-        xc = self.sequencia[j].getX() - self.coordAtual.getX()
-        xy = self.sequencia[j].getY() - self.coordAtual.getY()
-
-        print(xc)
-        print(xy)
-        if(xc > 0 and xy > 0):
-            print ("Ne")
-            self.setNe(xc,xy,1)
-        if(xc > 0 and xy < 0):
-            print ("Se")
-            self.setSe(xc,xy,1)
-        if(xc < 0 and xy > 0):
-            print ("No")
-            self.setNo(xc,xy,1)
-        if (xc < 0 and xy < 0):
-            print ("So")
-            self.setSo(xc,xy,1)
-        if(xc == 0):
-            if(xy > 0):
-                print ("N")
-                self.setNe(xc,xy,1)
-            if(xy < 0):
-                print ("S")
-                self.setSe(xc,xy,1)
-        if(xy == 0):
-            if(xc > 0):
-                print ("L")
-                self.setNe(xc,xy,1)
-            if(xc < 0):
-                print ("O")
-                self.setSo(xc,xy,1)
-        print ("caca aqui "+self.sequencia[j].toString())
-        del self.sequencia[j]
-
-    # Estrategia p/ inimigo perto
-    def setEstrategia_2(self):
-        #
-        # codigo (...)
-        #
-        pass
