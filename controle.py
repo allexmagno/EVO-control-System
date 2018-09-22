@@ -1,11 +1,13 @@
+from navegacao import *
+from movimento import *
 from autonomo import *
 import threading
-
+from manual import *
 robot = Movimento('outA', 'outD', 200)
 colors = ('unknown', 'black', 'blue', 'green', 'yellow', 'red', 'white', 'brown')
 sc = ColorSensor()
 sc.mode = 'COL-COLOR'
-
+manual = Manual(robot)
 
 def setNavegacao():
     s = int(input("1 (Ne), 2 (Se), 3 (No), 4 (So)\n"))
@@ -14,13 +16,13 @@ def setNavegacao():
     t3 = int(input("nav: "))
 
     if s == 1:
-        aut.setNe(t1, t2, t3)
+        nav.setNe(t1, t2, t3)
     elif s == 2:
-        aut.setSe(t1, t2, t3)
+        nav.setSe(t1, t2, t3)
     elif s == 3:
-        aut.setNo(t1, t2, t3)
+        nav.setNo(t1, t2, t3)
     elif s == 4:
-        aut.setSo(t1, t2, t3)
+        nav.setSo(t1, t2, t3)
 
 
 def setManual():
@@ -51,7 +53,7 @@ c2 = Coordenadas(0, 0, "L")
 c3 = Coordenadas(6, 6, 'O')
 s = [Coordenadas(0,6," "),Coordenadas(2,1," "),Coordenadas(4,0," "),Coordenadas(6,1," "),Coordenadas(3,5," "), Coordenadas(5,5, " "), Coordenadas(2,2, " "), Coordenadas(1,0, " "), Coordenadas(6,6, " ")]
 aut = Autonomo(c1, c2, c3, s, robot)
-
+nav = Navegacao(robot,c1)
 while (True):
     if colors[sc.value()] == "yellow":
         dir = input("Posicao inicial (0,0). informe direcao: ")

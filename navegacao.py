@@ -1,3 +1,4 @@
+from movimento import *
 
 class Navegacao:
 
