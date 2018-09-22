@@ -7,7 +7,7 @@ sc = ColorSensor()
 sc.mode = 'COL-COLOR'
 
 
-def setAutonomo():
+def setNavegacao():
     s = int(input("1 (Ne), 2 (Se), 3 (No), 4 (So)\n"))
     t1 = int(input("x: "))
     t2 = int(input("y: "))
@@ -76,13 +76,10 @@ while (True):
 
     a = input("(1) Autono \n(2) Manual: \n(3) Autonomo.exe")
     if a == "2":
-        m = threading.Thread(target=setManual)
-        m.start()
+        setManual()
 
     elif a == "1":
-        a = threading.Thread(target=setAutonomo)
-        a.start()
+        setAutonomo()
 
     elif a == "3":
-        r = threading.Thread(target=exe)
-        r.start()
+        exe()
