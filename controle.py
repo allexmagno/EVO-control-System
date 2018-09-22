@@ -3,6 +3,9 @@ from movimento import *
 from autonomo import *
 import threading
 from manual import *
+from coordenadas import *
+
+
 robot = Movimento('outA', 'outD', 200)
 colors = ('unknown', 'black', 'blue', 'green', 'yellow', 'red', 'white', 'brown')
 sc = ColorSensor()
