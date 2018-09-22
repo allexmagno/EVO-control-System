@@ -5,7 +5,11 @@ class Navegacao:
         self.coordAtual = coordAtual
         self.mover = robo
 
-    def setNe(self, nav):
+    def getCoord(self):
+        return self.coordAtual
+
+    def setNe(self, coord, nav):
+        self.coordAtual = coord
         if nav == 2:
             if self.coordAtual.getOr() == 'N':
                 while y > 0:
@@ -99,9 +103,11 @@ class Navegacao:
                     self.mover.setFrente()
                     y = y - 1
                     self.coordAtual.setY(self.coordAtual.getY() + 1)
+        return self.getCoord()
 
     # Caso (x+,y-)
-    def setSe(self, x, y, nav):
+    def setSe(self, coord, nav):
+        self.coordAtual = coord
         if nav == 2:
             if self.coordAtual.getOr() == 'S':
                 while y < 0:
@@ -195,9 +201,11 @@ class Navegacao:
                     self.mover.setFrente()
                     y = y + 1
                     self.coordAtual.setY(self.coordAtual.getY() - 1)
+        return self.getCoord()
 
     # Caso (x-, y+)
-    def setNo(self, x, y, nav):
+    def setNo(self, coord, nav):
+        self.coordAtual = coord
         if nav == 2:
             if self.coordAtual.getOr() == 'N':
                 while y > 0:
@@ -291,9 +299,12 @@ class Navegacao:
                     self.mover.setFrente()
                     y = y - 1
                     self.coordAtual.setY(self.coordAtual.getY() + 1)
+        return self.getCoord()
 
     # Caso (x-, y-)
-    def setSo(self, x, y, nav):
+    def setSo(self, coord, nav):
+
+        self.coordAtual = coord
         if nav == 2:
             if self.coordAtual.getOr() == 'S':
                 while y < 0:
@@ -387,4 +398,4 @@ class Navegacao:
                     self.mover.setFrente()
                     y = y + 1
                     self.coordAtual.setY(self.coordAtual.getY() - 1)
-
+        return self.getCoord()
