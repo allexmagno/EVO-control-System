@@ -18,10 +18,10 @@ class Autonomo:
 
 
     def setCoordenada(self, coordenada):
-        self.coordAtual = coordenada
+        self.nav.setCoord(coordenada)
 
     def getCoordenada(self):
-        return self.coordAtual.toString()
+        return self.nav.getCoord().toString()
 
     def getAversario(self, adv):
         self.coordAdv = adv
