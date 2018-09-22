@@ -394,5 +394,3 @@ class Navegacao:
                     self.mover.setFrente()
                     y = y + 1
                     self.coordAtual.setY(self.coordAtual.getY() - 1)
-
-        return self.getCoord()

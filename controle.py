@@ -67,7 +67,7 @@ while (True):
         c1 = Coordenadas(6, 6, dir)
 
 
-    print("Posicao atual: " + aut.getCoordenada())
+    print("Posicao atual: " + nav.getCoordenada())
     corrigir = input("Corrigir posicao? s ou n: ")
     if corrigir == "s":
         x = int(input("X atual: "))
@@ -75,9 +75,7 @@ while (True):
         dir = input("Direcao: ")
         print("Posicao atual ({},{},{})".format(x,y,dir))
         c1 = Coordenadas(x, y, dir)
-
-
-        aut = Autonomo(c1, c2, c3, s, robot)
+        aut.setCoordenada(c1)
 
     a = input("(1) Autono \n(2) Manual: \n(3) Autonomo.exe")
     if a == "2":
