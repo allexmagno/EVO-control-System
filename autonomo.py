@@ -54,17 +54,17 @@ class Autonomo:
 
 
             if(len(a.quadB) >= len(a.quadC)):
-                self.setEstrategia_Raio(a.quadB)
+                self.setEstrategia(a.quadB)
                 if(len(a.quadIgnorado) > len(a.quadA)):
-                    self.setEstrategia_Raio(a.quadIgnorado)
+                    self.setEstrategia(a.quadIgnorado)
                 else:
-                    self.setEstrategia_Raio(a.quadA)
+                    self.setEstrategia(a.quadA)
             else:
-                self.setEstrategia_Raio(a.quadC)
+                self.setEstrategia(a.quadC)
                 if (len(a.quadIgnorado) > len(a.quadA)):
-                    self.setEstrategia_Raio(a.quadIgnorado)
+                    self.setEstrategia(a.quadIgnorado)
                 else:
-                    self.setEstrategia_Raio(a.quadA)
+                    self.setEstrategia(a.quadA)
 
         #while len(self.sequencia) > 0:
             #self.sequencia.sort()
@@ -92,18 +92,19 @@ class Autonomo:
         return "Fim de jogo! \n Total de cacas encontradas: {}".format(self.cacasEncontradas)
 
 
-    def setEstrategia_Raio(self,listaQuadrante):
+    def setEstrategia(self,listaQuadrante):
         i = 0
         j = 0
 
         x_atual = self.coordAtual.getX()
         y_atual = self.coordAtual.getY()
 
-        aux = (((listaQuadrante.getX() - x_atual) ** 2) + (listaQuadrante.getY() - y_atual) ** 2) ** (1 / 2)
+        aux = (((listaQuadrante[i].getX() - x_atual) ** 2) + (listaQuadrante[i].getY() - y_atual) ** 2) ** (1 / 2)
+
         while i < (len(listaQuadrante)):
 
-            if aux > (((listaQuadrante.getX() - x_atual)**2) + (listaQuadrante.getY() - y_atual)**2)**(1/2):
-                aux = (((listaQuadrante.getX() - x_atual)**2) + (listaQuadrante.getY() - y_atual)**2)**(1/2)
+            if aux > (((listaQuadrante[i].getX() - x_atual)**2) + (listaQuadrante[i].getY() - y_atual)**2)**(1/2):
+                aux = (((listaQuadrante[i].getX() - x_atual)**2) + (listaQuadrante[i].getY() - y_atual)**2)**(1/2)
                 j = i
             i = i + 1
 
