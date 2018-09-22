@@ -1,16 +1,19 @@
-import threading
-from time import sleep
+
+from autonomo import *
+from coordenadas import *
 
 
-a = [1,1,2,3,4,4]
-b = [2]
-print(len(a), len(b))
-del a[5]
-del b[0]
+coord = Coordenadas(0,0,'N')
+c1 = Coordenadas(4,1,'N')
+c2 = Coordenadas(1,20,'N')
+c3 = Coordenadas(1,1,'N')
+c4 = Coordenadas(10,9,'N')
+c5 = Coordenadas(7,1,'N')
+c6 = Coordenadas(3,3,'N')
+c7 = Coordenadas(1,5,'N')
+c8 = Coordenadas(3,1,'N')
 
-if len(a) > 0:
-    print(a)
 
-if len(b) == 0:
-    print(b)
+
+print( autonomo.calculaDistancia(coord,c3,))
 

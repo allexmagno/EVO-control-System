@@ -37,3 +37,6 @@ class Coordenadas():
         a = (self.x ** 2 + self.y ** 2) ** (1/2)
         b = (other.x ** 2 + other.y ** 2) ** (1/2)
         return a < b
+
+
+

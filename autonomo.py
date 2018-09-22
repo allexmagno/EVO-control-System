@@ -1,7 +1,7 @@
 from movimento import *
-from coordenadas import *
 from quadrante import *
 from navegacao import *
+
 
 class Autonomo:
     def __init__(self, coordAtual, coordInicial, coordAdv, sequencia, robo):
@@ -10,7 +10,12 @@ class Autonomo:
         self.sequencia = sequencia
         self.coordAdv = coordAdv
         self.nav = Navegacao(self.coordAtual, robo)
+
+
+        self.mover = Movimento('outA', 'outD', 200)
+        self.mover = robo
         self.cacasEncontradas = 0
+
 
     def setCoordenada(self, coordenada):
         self.coordAtual = coordenada
@@ -27,7 +32,11 @@ class Autonomo:
     def setValidar(self):
         return self.coordAtual.toString()
 
-    # Metodo principal onde ira verificar qual a melhor estrategia naquele dado momento
+    def calculaDistancia(self, c1, c2):
+        aux = (((c1.getX() - c2.getX()) ** 2) + (c1.getY() - c2.getY()) ** 2) ** (1 / 2)
+        return aux
+
+
     def executar(self):
         a = quadrante(0,self.sequencia)
         a.dividirCacas()
@@ -37,6 +46,15 @@ class Autonomo:
             return "Lista de cacas nao definida."
 
         while len(self.sequencia) > 0:
+
+            self.sequencia.sort()
+
+            i = 0
+            while i in range(len(self.sequencia)):
+                mx = self.sequencia(0).getX - self.coordAtual.getX
+                my = self.sequencia(0).getY - self.coordAtual.getY
+
+
             if(len(a.quadB) >= len(a.quadC)):
                 self.setEstrategia_Raio(a.quadB)
                 if(len(a.quadIgnorado) > len(a.quadA)):
@@ -74,6 +92,7 @@ class Autonomo:
 
             #print ("CoordAtual "+ self.getCoordenada())
         return "Fim de jogo! \n Total de cacas encontradas: {}".format(self.cacasEncontradas)
+
 
     def setEstrategia_Raio(self,listaQuadrante):
         i = 0

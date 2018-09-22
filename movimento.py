@@ -1,4 +1,4 @@
-from ev3dev.ev3 import *
+#from ev3dev.ev3 import *
 from time import sleep
 
 class Movimento:
@@ -61,9 +61,15 @@ class Movimento:
         while self.colors[self.cl.value()] != "black":
             self.l.run_forever(speed_sp=-self.velocidade/2)
             self.r.run_forever(speed_sp=self.velocidade)
+
+        else:
+            #sleep(0.1)
+            self.setParar()
+
         #else:
             #sleep(0.1)
             #self.setParar()
+
 
         self.setParar()
 
