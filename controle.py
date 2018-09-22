@@ -48,22 +48,23 @@ nav = Navegacao(robot, c1)
 
 
 while True:
-    a = input("(1) Autonomo \n(2) Manual: \n(3) Autonomo.exe")
+    a = input("(1) Autonomo \n(2) Manual: \n")
     if a == "2":
+        man = threading.Thread(target=manual.comandos)
+        man.start()
+        man.join()
 
-       manual.comandos()
-
-    if a == 1:
+    if a == "1":
         if colors[sc.value()] == "yellow":
             dir = input("Posicao inicial (0,0). informe direcao: ")
             c1 = Coordenadas(0, 0, dir)
+            nav.setCoord(c1) 
 
         if colors[sc.value()] == "blue":
             dir = input("Posicao inicial (6,6). informe direcao: ")
             c1 = Coordenadas(6, 6, dir)
-
-
-        print("Posicao atual: " + nav.getCoordenada())
+            nav.setCoord(c1)
+        print("Posicao atual: " + nav.getCoord())
 
         corrigir = input("Corrigir posicao? s ou n: ")
         if corrigir == "s":
@@ -72,10 +73,12 @@ while True:
             dir = input("Direcao: ")
             print("Posicao atual ({},{},{})".format(x,y,dir))
             c1 = Coordenadas(x, y, dir)
-            aut.setCoordenada(c1)
+            nav.setCoord(c1)
 
-        b = input("(1) Autonomo \n(3) Autonomo \n")
-        if b == 1:
-            setNavegacao()
-        elif b == 2:
+        b = input("(1) Autonomo \n(2) Autonomo.exe \n")
+        if b == "1":
+           setNavegacao()
+        
+        elif b == "2":
             exe()
+            
