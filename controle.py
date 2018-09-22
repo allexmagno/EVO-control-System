@@ -67,7 +67,7 @@ while (True):
         c1 = Coordenadas(6, 6, dir)
 
 
-    print("Posicao atual: " + nav.getCoordenada())
+    print("Posicao atual: " + nav.getCoord())
     corrigir = input("Corrigir posicao? s ou n: ")
     if corrigir == "s":
         x = int(input("X atual: "))
@@ -82,7 +82,7 @@ while (True):
         setManual()
 
     elif a == "1":
-        setAutonomo()
+        setNavegacao()
 
     elif a == "3":
         exe()
