@@ -41,13 +41,16 @@ c8 = Coordenadas(2, 2, ' ')
 c9 = Coordenadas(5, 6, ' ')
 
 
+
 s = [c4, c5, c6, c7, c8, c9]
 aut = Autonomo(c1, c2, c3, s, robot)
 nav = Navegacao(robot, c1)
 
+
 while True:
     a = input("(1) Autonomo \n(2) Manual: \n(3) Autonomo.exe")
     if a == "2":
+
        manual.comandos()
 
     if a == 1:

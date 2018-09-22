@@ -7,7 +7,7 @@ class Navegacao:
         self.mover = robo
 
     def getCoord(self):
-        return self.coordAtual
+        return self.coordAtual.toString()
 
     def setCoord(self, coord):
         self.coordAtual = coord
