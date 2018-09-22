@@ -18,10 +18,10 @@ class Autonomo:
 
 
     def setCoordenada(self, coordenada):
-        self.coordAtual = coordenada
+        self.nav.setCoord(coordenada)
 
     def getCoordenada(self):
-        return self.coordAtual.toString()
+        return self.nav.getCoord().toString()
 
     def getAversario(self, adv):
         self.coordAdv = adv
@@ -109,30 +109,30 @@ class Autonomo:
         print(xy)
         if(xc > 0 and xy > 0):
             print ("Ne")
-            self.nav.setNe(xc,xy,Navegacao(self.coordAtual, robo))
+            self.nav.setNe(xc,xy,1)
         if(xc > 0 and xy < 0):
             print ("Se")
-            self.nav.setSe(xc,xy,Navegacao(self.coordAtual, robo))
+            self.nav.setSe(xc,xy,1)
         if(xc < 0 and xy > 0):
             print ("No")
-            self.nav.setNo(xc,xy,Navegacao(self.coordAtual, robo))
+            self.nav.setNo(xc,xy,1)
         if (xc < 0 and xy < 0):
             print ("So")
-            self.nav.setSo(xc,xy,Navegacao(self.coordAtual, robo))
+            self.nav.setSo(xc,xy,1)
         if(xc == 0):
             if(xy > 0):
                 print ("N")
-                self.nav.setNe(xc,xy,Navegacao(self.coordAtual, robo))
+                self.nav.setNe(xc,xy,1)
             if(xy < 0):
                 print ("S")
-                self.nav.setSe(xc,xy,Navegacao(self.coordAtual, robo))
+                self.nav.setSe(xc,xy,1)
         if(xy == 0):
             if(xc > 0):
                 print ("L")
-                self.nav.setNe(xc,xy,Navegacao(self.coordAtual, robo)
+                self.nav.setNe(xc,xy,1)
             if(xc < 0):
                 print ("O")
-                self.nav.setSo(xc,xy,Navegacao(self.coordAtual, robo)
+                self.nav.setSo(xc,xy,1)
         print ("caca aqui "+self.sequencia[j].toString())
 
         iterador = 0
