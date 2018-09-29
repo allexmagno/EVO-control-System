@@ -9,7 +9,7 @@ class Autonomo:
         self.coordInicial = coordInicial
         self.sequencia = sequencia
         self.coordAdv = coordAdv
-        self.nav = Navegacao(self.coordAtual, robo)
+        self.nav = Navegacao(robo, self.coordAtual)
 
 
         self.mover = Movimento('outA', 'outD', 200)
@@ -67,7 +67,7 @@ class Autonomo:
 
             #####################################
             ##TUDO que começa com 2 ## JA ESTAVA COMENTADO############
-            ######################3
+            ######################
 
             ##if self.setValidar():
             ##    self.cacasEncontradas = self.cacasEncontradas + 1
@@ -85,6 +85,7 @@ class Autonomo:
             #print ("CoordAtual "+ self.getCoordenada())
         return "Fim de jogo! \n Total de cacas encontradas: {}".format(self.cacasEncontradas)
 
+    
 
     def setEstrategia(self,listaQuadrante):
         i = 0
