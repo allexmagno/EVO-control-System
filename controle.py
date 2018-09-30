@@ -47,8 +47,7 @@ aut = Autonomo(c1, c2, c3, s, robot)
 nav = Navegacao(robot, c1)
 
 while True:
-    print("Posicao atual: " + nav.getCoord().toString())
-    a = input("(1) Autonomo \n(2) Manual:")
+    a = input("(1) Autonomo \n(2) Manual: \n")
     if a == "2":
         man = threading.Thread(target=manual.comandos)
         man.start()
@@ -67,6 +66,9 @@ while True:
             nav.setCoord(c1)
             aut.setCoordenada(c1)
 
+        print("Posicao atual: " + nav.getCoord())
+
+
         corrigir = input("Corrigir posicao? s ou n: ")
         if corrigir == "s":
             x = int(input("X atual: "))
@@ -83,3 +85,4 @@ while True:
 
         elif b == "2":
             exe()
+

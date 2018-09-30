@@ -1,0 +1,9 @@
+SA: Sistema Auditor, responsável por definir lista de caças, selecionar o modo
+de jogo e validar as caças.
+
+Usuário: Resposável por indicar os comando para onde o robô deverá ir e
+solicitar ao SS a validação das caças.
+
+SS: Sistema supervisor responsável por indicar ações que serão realizados
+no robô, coletar informações de localização e informa-las ao usuário  e solicitar
+ao SA para validar as caças. 
