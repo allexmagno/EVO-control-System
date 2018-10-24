@@ -1,4 +1,3 @@
-
 class Manual:
 
     def __init__(self,robot):
