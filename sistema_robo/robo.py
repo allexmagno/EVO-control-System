@@ -1,5 +1,5 @@
 from movimento import *
-from dados import *
+from sistema_robo.dados import *
 
 
 class robo:
