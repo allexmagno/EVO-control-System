@@ -1,7 +1,7 @@
 from movimento import *
 from quadrante import *
 from navegacao import *
-449342681
+
 
 class Autonomo:
     def __init__(self, coordAtual, coordInicial, coordAdv, sequencia, robo):
