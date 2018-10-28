@@ -1,6 +1,5 @@
 import Pyro4
 
-
 @Pyro4.expose
 class SSCom:
 

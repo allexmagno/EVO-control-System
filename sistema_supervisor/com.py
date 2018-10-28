@@ -1,6 +1,12 @@
 import Pyro4
 
-srcom = Pyro4.Proxy("PYRO:obj_e3b3398ebbee403090ce1981bc83aecd@localhost:37439")
+ns = Pyro4.locateNS("192.165.15.110",6896)
+print("a")
+uri = ns.lookup('obj')
+print(uri)
+
+
+srcom = Pyro4.Proxy(uri)
 
 print(srcom.getPosInicial())
 

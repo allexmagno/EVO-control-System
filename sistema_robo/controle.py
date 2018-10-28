@@ -1,6 +1,6 @@
-from navegacao import *
-from movimento import *
-from autonomo import *
+from dev.sistema_robo.navegacao import *
+from dev.sistema_robo.movimento import *
+from dev.sistema_robo.autonomo import *
 import threading
 from manual import *
 from coordenadas import *

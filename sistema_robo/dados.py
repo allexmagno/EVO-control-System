@@ -1,5 +1,5 @@
-from sistema_robo.coordenadas import *
-from sistema_robo.estrategia import *
+from coordenadas import *
+from estrategia import *
 
 class Dados:
 

@@ -1,5 +1,5 @@
-from sistema_robo.dados import *
-from sistema_robo.com import *
+from dados import *
+from com import *
 
 lista = []
 dados = Dados('(0,0)', lista)

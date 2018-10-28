@@ -1,4 +1,4 @@
-from movimento import *
+from dev.sistema_robo.movimento import *
 
 class Navegacao:
 
