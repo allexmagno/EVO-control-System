@@ -2,7 +2,7 @@ class Estrategia:
 
 
     def __init__(self, lista):
-        self.estrategia = Estrategia(lista)
+        self.lista = lista
 
     def getEstrategia(self):
         return self.lista[0]

@@ -1,5 +1,5 @@
-from coordenadas import *
-from estrategia import *
+from sistema_robo.coordenadas import *
+from sistema_robo.estrategia import *
 
 class Dados:
 
@@ -14,9 +14,8 @@ class Dados:
     def setDestino(self):
         pass
 
-    def setCoordenadas(self):
-        pass
-
+    def setCoordenadas(self, x, y):
+        self.coordenadas.setCoordenada(x, y)
 
     def getEstrategia(self):
         pass

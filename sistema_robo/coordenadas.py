@@ -8,7 +8,7 @@ class Coordenadas():
     def __init__(self, coordenadas):
         self.x = coordenadas[1]
         self.y= coordenadas [3]
-
+        self.orient = " "
         if self.x == 0 and self.y ==0:
             self.orient = "L"
         elif self.x == 6 and self.y ==6:
