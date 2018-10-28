@@ -1,4 +1,5 @@
-from com import *
+from connect import *
+
 
 com  = Com("magno", 99)
 

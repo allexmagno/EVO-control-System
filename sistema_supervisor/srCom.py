@@ -1,27 +1,27 @@
-import abc
+import Pyro4
 
+class SRcom:
 
-class SRCom(metaclass=abc.ABCMeta):
+    def __init__(self, uri):
+        self.srcom = Pyro4.Proxy(uri)
 
-    def __init__(self):
+    def setID(self, valor):
         pass
 
-    @abc.abstractclassmethod
-    def getID(cls):
+    def getPosInicial(self):
+        return self.srcom.getCoordenadas()
+
+    def getSituacaoMapa(self):
         pass
 
-    @abc.abstractclassmethod
-    def getPosInicial(cls):
+    def setMover(self, direcao):
         pass
 
-    @abc.abstractclassmethod
-    def getSituacaoMapa(cls):
+    def setTime(self):
         pass
 
-    @abc.abstractclassmethod
-    def setMover(cls, direcao):
-        pass
+print(srcom.getPosInicial())
 
-    @abc.abstractclassmethod
-    def setTime(cls):
-        pass
+k = input("atualiza coord")
+
+print(srcom.getPosInicial())
