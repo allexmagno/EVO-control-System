@@ -9,8 +9,6 @@ class Com(Thread):
         Thread.__init__(self)
         sscom = SSCom(dados)
 
-
-
         self.deamon = Pyro4.Daemon(host = "192.168.15.110",port= 6899)
 
         self.uri = self.deamon.register(sscom)
