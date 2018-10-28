@@ -1,15 +1,23 @@
 import Pyro4
+import pika
 
-ns = Pyro4.locateNS("192.165.15.110",6896)
-print("a")
-uri = ns.lookup('obj')
-print(uri)
+connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+channel = connection.channel()
 
+channel.queue_declare('start')
 
-srcom = Pyro4.Proxy(uri)
+def callback(ch, method, properties, body):
+    srcom = Pyro4.Proxy(body.decode())
 
-print(srcom.getPosInicial())
+    print(srcom.getPosInicial())
 
-k = input("atualiza coord")
+    k = input("atualiza coord")
 
-print(srcom.getPosInicial())
+    print(srcom.getPosInicial())
+
+channel.basic_consume(callback,
+                      queue='start',
+                      no_ack=True)
+
+channel.start_consuming()
+
