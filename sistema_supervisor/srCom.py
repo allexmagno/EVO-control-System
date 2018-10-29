@@ -9,7 +9,7 @@ class SRcom:
         pass
 
     def getPosInicial(self):
-        return self.srcom.getCoordenadas()
+        return self.srcom.getPosInicial()
 
     def getSituacaoMapa(self):
         pass
@@ -19,9 +19,3 @@ class SRcom:
 
     def setTime(self):
         pass
-
-print(srcom.getPosInicial())
-
-k = input("atualiza coord")
-
-print(srcom.getPosInicial())

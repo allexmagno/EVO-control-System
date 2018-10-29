@@ -1,10 +1,8 @@
 import pika
-from threading import Thread
 
-class ssConnect(Thread):
+class SSconnect():
 
     def __init__(self, fila_sr, fila_sa):
-        Thread.__init__(self)
         self.fila_sr = fila_sr
         self.fila_sa = fila_sa
         self.connection_sr = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
@@ -16,20 +14,23 @@ class ssConnect(Thread):
         self.channel_sa.queue_declare(queue=fila_sa)
 
 
-    def callback_sr(ch, method, properties, body):
-        return body.decode()
+
+    def callback(ch, method, properties, body):
+        body.decode()
 
     def callback_sa(ch, method, properties, body):
         return body.decode()
 
     def fila(self):
-        self.channel_sr.basic_consume(self.callback_sr,
+        self.channel_sr.basic_consume(self.callback,
                                       queue=self.fila_sr,
                                       no_ack=True)
-        self.channel_sa.basic_consume(self.callback_sa,
+        self.channel_sa.basic_consume(self.callback,
                                       queue=self.fila_sa,
                                       no_ack=True)
 
-    def run(self):
+    def consuming_sr(self):
         self.channel_sr.start_consuming()
+
+    def consuming_sa(self):
         self.channel_sa.start_consuming()
