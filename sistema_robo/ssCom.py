@@ -17,7 +17,7 @@ class SSCom:
         pass
 
     def setMover(self, direcao):
-        pass
+        return (direcao)
 
     def setTime(self):
         pass

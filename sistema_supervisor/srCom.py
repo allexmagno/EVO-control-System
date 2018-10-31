@@ -15,7 +15,7 @@ class SRcom:
         pass
 
     def setMover(self, direcao):
-        pass
+        return self.srcom.setMover(direcao)
 
     def setTime(self):
         pass
