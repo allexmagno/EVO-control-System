@@ -1,10 +1,5 @@
 class Coordenadas():
 
-    def __init__(self, x, y, orientacao):
-        self.x = x
-        self.y = y
-        self.orient = orientacao
-
     def __init__(self, coordenadas):
         self.x = coordenadas[1]
         self.y= coordenadas [3]
@@ -96,6 +91,3 @@ class Coordenadas():
         a = (self.x ** 2 + self.y ** 2) ** (1/2)
         b = (other.x ** 2 + other.y ** 2) ** (1/2)
         return a < b
-
-
-

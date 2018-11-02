@@ -1,5 +1,5 @@
 import Pyro4.core
-from ssCom import *
+from srCom import *
 from threading import Thread
 import subprocess
 
