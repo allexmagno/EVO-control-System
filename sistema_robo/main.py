@@ -72,7 +72,7 @@ def clienteSS(cliente_socket):
         ## Cord Inicial e Lista recebida
         #Chamar estrategia e comunicar com SS pela porta especifica
         dado = Dados(cordInicial,listCord)
-        robo = robo(dado)
+        robo = Robo(dado)
 
         aut = Autonomo(robo)
         aut.inicia()

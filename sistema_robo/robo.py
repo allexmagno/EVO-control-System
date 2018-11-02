@@ -2,7 +2,7 @@ from movimento import *
 from dados import *
 
 
-class robo:
+class Robo:
 
     def __init__(self, dados):
         self.dados = dados
