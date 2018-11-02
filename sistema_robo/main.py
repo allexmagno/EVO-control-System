@@ -41,16 +41,33 @@ def clienteSS(cliente_socket):
         print(split)
 
         i = 0
-        while(i <= len(split)):
+
+        cordInicial = []
+        listCord = []
+
+        while(i < len(split)):
             if(split[i] == "cord"):
                 i += 1
-                cord = []
-                cord.append(split[i][0])
-                cord.append(split[i][1])
+                cordInicial.append(split[i][0])
+                cordInicial.append(split[i][1])
             elif(split[i] == "lista"):
-                print("lista")
                 i += 1
+                cordenadas = split[i].split("/")
+                print(cordenadas)
+                j = 0
+                while j < len(cordenadas):
+                    if (j == len(cordenadas)):
+                        break
+                    else:
+                        cordLista = []
+                        cordLista.append(cordenadas[j][0])
+                        cordLista.append(cordenadas[j][1])
+                        listCord.append(cordLista)
+                        j += 1
+            i += 1
 
+        print(cordInicial)
+        print(listCord)
         ## Cord Inicial e Lista recebida
         #Chamar estrategia e comunicar com SS pela porta especifica
 

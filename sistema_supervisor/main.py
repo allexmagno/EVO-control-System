@@ -5,6 +5,7 @@ from srCom import *
 import threading
 import socket
 from autonomo import *
+from serial import *
 
 
 server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -39,10 +40,20 @@ elif (msg == "auto"):
     ## Receber do SA Cordenada Inicial e Lista de caças
     Lista = []
     cordI = [0,0]
+    cord0 = [3, 2]
+    cord1 = [6, 1]
+    cord2 = [5, 5]
+
+    Lista.append(cord0)
+    Lista.append(cord1)
+    Lista.append(cord2)
+
+    serializa = Serial()
+    strSerial = serializa.serializa(Lista)
 
     aut = Autonomo(cordI,Lista)
 
-    inicio = "cord|" + str(cordI[0]) + str(cordI[1]) + "|lista"
+    inicio = "cord|" + str(cordI[0]) + str(cordI[1]) + "|lista|" + strSerial
 
     #Envia cordenada Inicial e Lista de caças para o Robo
     clienteSS.send(inicio.encode())
