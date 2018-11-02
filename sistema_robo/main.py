@@ -32,7 +32,27 @@ def clienteSS(cliente_socket):
         pass
 
     elif(resposta.decode() == "auto"):
-        pass
+        cliente_socket.send("ready".encode())
+        resp = cliente_socket.recv(1024)
+
+        print(resp.decode())
+
+        split = resp.decode().split('|')
+        print(split)
+
+        i = 0
+        while(i <= len(split)):
+            if(split[i] == "cord"):
+                i += 1
+                cord = []
+                cord.append(split[i][0])
+                cord.append(split[i][1])
+            elif(split[i] == "lista"):
+                print("lista")
+                i += 1
+
+        ## Cord Inicial e Lista recebida
+        #Chamar estrategia e comunicar com SS pela porta especifica
 
     elif(resposta.decode() == "manual"):
         porta = 61031

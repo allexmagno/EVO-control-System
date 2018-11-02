@@ -4,6 +4,7 @@ from manual import *
 from srCom import *
 import threading
 import socket
+from autonomo import *
 
 
 server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -28,7 +29,26 @@ if (msg == "getid"):
     print(clienteSS.recv(1024).decode())
 
 elif (msg == "auto"):
-    pass
+    estadoRobo = ""
+
+    while(estadoRobo != "ready"):
+        clienteSS.send(msg.encode())
+        estadoRobo = clienteSS.recv(1024)
+        estadoRobo = estadoRobo.decode()
+
+    ## Receber do SA Cordenada Inicial e Lista de caças
+    Lista = []
+    cordI = [0,0]
+
+    aut = Autonomo(cordI,Lista)
+
+    inicio = "cord|" + str(cordI[0]) + str(cordI[1]) + "|lista"
+
+    #Envia cordenada Inicial e Lista de caças para o Robo
+    clienteSS.send(inicio.encode())
+
+    #Inicial autonomo para receber mensagens na porta especifica
+    aut.inicia()
 
 elif (msg == "manual"):
     clienteSS.send(msg.encode())
@@ -43,13 +63,13 @@ elif (msg == "manual"):
     while x != "x":
         x = manual.controle()
         if(x == "w"):
-            print(srcom.setMover("Frente"))
+            print(srcom.setMover("frente"))
         elif(x == "a"):
-            srcom.setMover("Esquerda")
+            srcom.setMover("esquerda")
         elif(x == "s"):
-            srcom.setMover("Tras")
+            srcom.setMover("retornar")
         elif(x == "d"):
-            srcom.setMover("Direita")
+            srcom.setMover("direita")
         elif(x == "(espaço)"):
             pass
         elif(x == "(c)"):
@@ -61,9 +81,6 @@ elif (msg == "whatever"):
 ####
 # ...
 ####
-
-
-
 
 '''
 server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
