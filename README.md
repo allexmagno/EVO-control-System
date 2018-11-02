@@ -26,3 +26,14 @@ Este repositório está organizado da seguinte maneira:
 Os robô utilizados no projeto são: [LEGOs Mindstroms
 EV3](https://www.lego.com/en-us/mindstorms/products/mindstorms-ev3-31313)
 
+*Sumario Portas Utilizadas:*
+
+**__Comunicação SS -> SR:__**
+* __62255 :__ Porta Usada para o Robo divulgar seu IP por BroadCast
+* __65256 :__ Porta Usada para o SS divulgar seu IP por BroadCast
+* __61030 :__ Porta Usada pelo SS para mandar instrução ao robo (modo autonomo, modo manual etc)
+* __61031 :__ Porta Usada para a comunicação no modo Manual (utilizando Pyro4)
+* __63030 :__ Porta Usada para a comunicação no modo Manual
+
+
+

@@ -3,6 +3,9 @@ import Pyro4
 @Pyro4.expose
 class SSCom:
 
+    #
+    #Receber Robo como parametro
+    #
     def __init__(self, dados):
         self.dados = dados
 
@@ -17,6 +20,9 @@ class SSCom:
         pass
 
     def setMover(self, direcao):
+        ##
+        #Executar mover do rovo
+        ##
         return (direcao)
 
     def setTime(self):
