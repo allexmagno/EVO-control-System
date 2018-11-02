@@ -6,8 +6,8 @@ class Coordenadas():
         self.orient = orientacao
 
     def __init__(self, coordenadas):
-        self.x = coordenadas[1]
-        self.y= coordenadas [3]
+        self.x = coordenadas[0]
+        self.y= coordenadas[1]
         self.orient = " "
         if self.x == 0 and self.y ==0:
             self.orient = "L"

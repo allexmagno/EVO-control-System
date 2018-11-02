@@ -1,5 +1,7 @@
 import threading
 import socket
+import subprocess
+from broadcast import *
 
 
 class Autonomo:
@@ -9,6 +11,12 @@ class Autonomo:
         self.lista = lista
 
     def inicia(self):
+        ipSS = subprocess.getoutput("hostname -I | cut -f1 -d \" \" ")
+        print(ipSS)
+
+        divulgaIP = Broadcast()
+        divulgaIP.cast(ipSS)
+
         host = '0.0.0.0'
         # Porta para o Robo mandar as instruções do modo autonomo#
         port = 63030
@@ -27,8 +35,12 @@ class Autonomo:
             i = 0
 
             if(split[i] == "destino"):
+                ##Informar ao SA proximo destino do robo
+                ##Encaminhar ao robo situação atualizada do MAPA posição adversario e lista de caças()
                 pass
             elif(split[i] == "encontrada"):
+                ##Solicitar validação do SA para a caça
+                ##Confirmar ou nao validação e enviar situação do Mapa atualizada
                 pass
             elif(split[i] == "..."):
                 pass

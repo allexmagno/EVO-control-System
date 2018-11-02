@@ -6,25 +6,21 @@ import threading
 import socket
 from autonomo import *
 from serial import *
+from discoveryRobo import *
 
 
-server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server.bind(('', 62255))
+discovery = Discovery()
 
-host = ''
-while host == '':
-    host = server.recvfrom(1024)
+ipRobo = discovery.encontraIP()
 port = 61030
 
 clienteSS = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-clienteSS.connect((host[0].decode(),port))
+clienteSS.connect((ipRobo[0].decode(),port))
 
-
+## Receber informação do SA
+# STUB :
 msg = input("digite a mensagem: ")
 
-####
-# ...
-####
 if (msg == "getid"):
     clienteSS.send(msg.encode())
     print(clienteSS.recv(1024).decode())
@@ -38,6 +34,7 @@ elif (msg == "auto"):
         estadoRobo = estadoRobo.decode()
 
     ## Receber do SA Cordenada Inicial e Lista de caças
+    #STUB:
     Lista = []
     cordI = [0,0]
     cord0 = [3, 2]
@@ -48,9 +45,11 @@ elif (msg == "auto"):
     Lista.append(cord1)
     Lista.append(cord2)
 
+    #serializar dados e encaminhar ao SR
     serializa = Serial()
     strSerial = serializa.serializa(Lista)
 
+    #Classe "Autonomo" irá tratar do recebimento das mensagens do SR e transmitirá ao SA
     aut = Autonomo(cordI,Lista)
 
     inicio = "cord|" + str(cordI[0]) + str(cordI[1]) + "|lista|" + strSerial
@@ -89,29 +88,3 @@ elif (msg == "manual"):
 
 elif (msg == "whatever"):
     pass
-####
-# ...
-####
-
-'''
-server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server.bind(('', 61030))
-print("Server up", socket.gethostbyname(socket.gethostname()))
-
-mensagem = server.recvfrom(1024)
-
-robo = mensagem[1]
-
-server.sendto("uri".encode(), robo)
-mensagem =server.recvfrom(1024)
-
-uri = mensagem[0].decode()
-manual = Manual()
-print(uri)
-srcom = SRcom(uri)
-
-x = ''
-while x != "x":
-    x = manual.controle()
-    print(srcom.getPosInicial())
-'''
