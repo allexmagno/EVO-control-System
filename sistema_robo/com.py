@@ -2,15 +2,23 @@ import Pyro4.core
 from srCom import *
 from threading import Thread
 import subprocess
+import socket
 
+@Pyro4.expose
 class Com(Thread):
-    def __init__(self, dados, porta):
+    def __init__(self, porta):
         Thread.__init__(self)
-        sscom = SSCom(dados)
         self.ip = subprocess.getoutput("hostname -I | cut -f1 -d \" \" ")
-        self.deamon = Pyro4.Daemon(host=self.ip,port=porta)
+        print(self.ip)
+        self.porta = porta
+        self.client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.client.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        self.client.bind((self.ip, self.porta))
 
-        self.uri = self.deamon.register(sscom)
+    def rpc(self, dados):
+        self.srcom = SRCom(dados)
+        self.deamon = Pyro4.Daemon(host=self.ip, port=self.porta)
+        self.uri = self.deamon.register(self.srcom)
 
     def run(self):
         self.deamon.requestLoop()
@@ -20,3 +28,17 @@ class Com(Thread):
 
     def getIP(self):
         return self.ip
+
+    def enviar(self, msg, host):
+        self.client.sendto(msg.encode(), host)
+
+    def receber(self):
+        return self.client.recvfrom(1024)
+
+    def descoberta(self, ssID):
+        msg = self.receber()
+        while msg[0] != ssID:
+            msg = self.receber()
+
+        self.enviar(msg[1], "SRequipe1")
+        return msg[1]

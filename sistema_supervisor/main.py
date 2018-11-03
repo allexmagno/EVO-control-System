@@ -7,8 +7,34 @@ import socket
 from autonomo import *
 from serial import *
 from discoveryRobo import *
+from com import *
 
 
+com = Com(65000)
+
+
+host = com.descoberta("SRequipe1")
+
+coord = input("Coordenada inicial do Robo: ")
+com.enviar(coord)
+uri = com.receber()
+srcom = SRCom(uri[0])
+manual = Manual()
+
+
+comando = ''
+while comando != "x":
+   comando = manual.controle()
+
+   if comando == "w":
+       srcom.setMover("frente")
+
+   elif comando == "c":
+       scrom.getPosAtual()
+
+
+
+'''
 discovery = Discovery()
 
 ipRobo = discovery.encontraIP()
@@ -88,3 +114,4 @@ elif (msg == "manual"):
 
 elif (msg == "whatever"):
     pass
+'''

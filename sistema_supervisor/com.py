@@ -1,22 +1,30 @@
-import Pyro4
-import pika
+import subprocess
+import socket
 
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
-channel = connection.channel()
 
-channel.queue_declare('start')
+class Com():
+    def __init__(self, porta):
+        self.ip = subprocess.getoutput("hostname -I | cut -f1 -d \" \" ")
+        self.porta = porta
+        self.client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.client.bind((self.ip, self.porta))
 
-def callback(ch, method, properties, body):
-    srcom = Pyro4.Proxy(body.decode())
 
-    print(srcom.getPosInicial())
+    def getIP(self):
+        return self.ip
 
-    k = input("atualiza coord")
+    def enviar(self, host, msg):
+        self.client.sendto(msg.encode(), host)
 
-    print(srcom.getPosInicial())
+    def receber(self):
+        return self.client.recvfrom(1024)
 
-channel.basic_consume(callback,
-                      queue='start',
-                      no_ack=True)
+    def descoberta(self, ssID):
+        print("procurando robo")
+        msg = self.receber()
+        while msg[0] != ssID:
+            msg = self.receber()
 
-channel.start_consuming()
+        print("host econtrado")
+        self.enviar(msg[1], "SSequipe1")
+        return msg[1]

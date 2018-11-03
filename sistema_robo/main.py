@@ -2,10 +2,53 @@ from dados import *
 from com import *
 #from robo import *
 from broadcast import *
+from ssCom import *
+import time
+import time
 import socket
 import threading
 import subprocess
 
+porta = 62255
+com = Com(porta)
+
+
+### todos os processos iniciais da partida
+msg = ''
+
+m = input("ip")
+com.enviar((m,porta), "SRequipe1")
+msg = com.receber()
+
+
+coord = com.receber()
+lista = []
+dados = Dados(coord[0], lista)
+com.enviar(com.getURI())
+
+com.rpc(dados)
+com.start()
+
+sscom = SSCom(com, host, dados)
+
+
+# simulando o robo movimentando
+
+while(True):
+    comando = input("(a) validar\n"
+                    "(s) posicao\n")
+
+    if comando == "a":
+        x = input("valor de x = ")
+        y = input("valor de y = ")
+        sscom.setValidar(x,y)
+
+    elif comando == "s":
+        sscom.setPosAtual()
+
+
+
+'''
 ipRobo = subprocess.getoutput("hostname -I | cut -f1 -d \" \" ")
 print(ipRobo)
 
@@ -100,3 +143,4 @@ while(True):
     client, addr = serverSR.accept()
     cliente = threading.Thread(target=clienteSS, args= (client,))
     cliente.start()
+'''
