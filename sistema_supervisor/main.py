@@ -18,6 +18,7 @@ host = com.descoberta("SRequipe1")
 coord = input("Coordenada inicial do Robo: ")
 com.enviar(host, coord)
 uri = com.receber()
+print(uri[0].decode())
 srcom = SRCom(uri[0].decode())
 manual = Manual()
 
@@ -30,7 +31,7 @@ while comando != "x":
        srcom.setMover("frente")
 
    elif comando == "c":
-       scrom.getPosAtual()
+       print(srcom.getPosAtual())
 
 
 

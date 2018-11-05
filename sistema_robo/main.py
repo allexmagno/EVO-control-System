@@ -25,6 +25,8 @@ dados = Dados(coord[0].decode(), lista)
 
 com.rpc(dados)
 host = coord[1]
+print(str(com.getURI()))
+
 com.enviar(str(com.getURI()), host)
 com.start()
 
@@ -43,7 +45,7 @@ while(True):
         sscom.setValidar(x,y)
 
     elif comando == "s":
-        sscom.setPosAtual()
+        sscom.getPosAtual()
 
 
 

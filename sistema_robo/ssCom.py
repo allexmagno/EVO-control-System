@@ -8,7 +8,10 @@ class SSCom:
         self.host = host
 
     def setPosAtual(self):
-        self.com.enviar(self.host, self.dados.coordenadas.toString())
+        pass
+
+    def getPosAtual(self):
+        self.com.enviar(self.dados.coordenadas.toString(), self.host)
 
     def sedDestino(self):
         self.com.enviar(self.dados.getDestino().toString())
