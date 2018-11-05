@@ -16,8 +16,8 @@ class Autonomo:
         clienteSR = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         clienteSR.connect((ipSS[0].decode(), port))
 
-
-
+        ##
+        #Começar a tratar qual a proxima caça e proximo movimentp
 
     def encontraCaca(self):
         pass

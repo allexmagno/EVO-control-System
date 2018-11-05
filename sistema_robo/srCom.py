@@ -13,7 +13,7 @@ class SRCom:
 
 
     def setID(self, valor):
-        #self.robo.getID()
+        self.robo.getID()
         pass
 
     def getPosInicial(self):

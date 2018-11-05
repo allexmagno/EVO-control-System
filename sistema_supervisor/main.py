@@ -23,14 +23,19 @@ srcom = SRCom(uri[0].decode())
 manual = Manual()
 
 
-comando = ''
-while comando != "x":
-   comando = manual.controle()
+x = ''
+while x != "x":
+   x = manual.controle()
 
-   if comando == "w":
-       srcom.setMover("frente")
-
-   elif comando == "c":
+   if (x == "w"):
+       print(srcom.setMover("frente"))
+   elif (x == "a"):
+       srcom.setMover("esquerda")
+   elif (x == "s"):
+       srcom.setMover("retornar")
+   elif (x == "d"):
+       srcom.setMover("direita")
+   elif x == "c":
        print(srcom.getPosAtual())
 
 
