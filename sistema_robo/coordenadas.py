@@ -28,10 +28,11 @@ class Coordenadas():
             self.x = self.x + 1
             self.orient = "L"
         elif self.orient == "N":
-            self.y = self.y + 1
+
+            self.y = self.y - 1
             self.orient = "S"
         elif self.orient == "S":
-            self.y = self.y -1
+            self.y = self.y + 1
             self.orient = "N"
 
     def atualizarDireita(self):
