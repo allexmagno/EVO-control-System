@@ -14,19 +14,18 @@ com = Com(porta)
 
 
 ### todos os processos iniciais da partida
-msg = ''
 
-m = input("ip")
-com.enviar((m,porta), "SRequipe1")
+com.broadcast("SRequipe1", 65000)
 msg = com.receber()
 
 
 coord = com.receber()
 lista = []
-dados = Dados(coord[0], lista)
-com.enviar(com.getURI())
+dados = Dados(coord[0].decode(), lista)
 
 com.rpc(dados)
+host = coord[1]
+com.enviar(str(com.getURI()), host)
 com.start()
 
 sscom = SSCom(com, host, dados)

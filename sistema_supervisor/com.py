@@ -7,7 +7,7 @@ class Com():
         self.ip = subprocess.getoutput("hostname -I | cut -f1 -d \" \" ")
         self.porta = porta
         self.client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.client.bind((self.ip, self.porta))
+        self.client.bind(('', self.porta))
 
 
     def getIP(self):
@@ -22,7 +22,8 @@ class Com():
     def descoberta(self, ssID):
         print("procurando robo")
         msg = self.receber()
-        while msg[0] != ssID:
+        print(msg)
+        while msg[0].decode() != ssID:
             msg = self.receber()
 
         print("host econtrado")
