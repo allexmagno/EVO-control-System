@@ -4,6 +4,7 @@ from threading import Thread
 import subprocess
 import socket
 
+
 @Pyro4.expose
 class Com(Thread):
     def __init__(self, porta):
@@ -12,8 +13,8 @@ class Com(Thread):
         print(self.ip)
         self.porta = porta
         self.client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.client.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        self.client.bind((self.ip, self.porta))
+        self.client.bind(('', self.porta))
+        self.uri = ''
 
     def rpc(self, dados):
         self.srcom = SRCom(dados)
@@ -37,8 +38,12 @@ class Com(Thread):
 
     def descoberta(self, ssID):
         msg = self.receber()
-        while msg[0] != ssID:
+        while msg[0].decode() != ssID:
             msg = self.receber()
 
         self.enviar(msg[1], "SRequipe1")
         return msg[1]
+
+    def broadcast(self, msg, porta):
+        self.client.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        self.client.sendto(msg.encode(), ('255.255.255.255', porta))

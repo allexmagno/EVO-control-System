@@ -1,6 +1,6 @@
 import Pyro4
 
-class SRcom:
+class SRCom:
 
     def __init__(self, uri):
         self.comando = Pyro4.Proxy(uri)

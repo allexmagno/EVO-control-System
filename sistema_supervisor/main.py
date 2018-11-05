@@ -16,9 +16,9 @@ com = Com(65000)
 host = com.descoberta("SRequipe1")
 
 coord = input("Coordenada inicial do Robo: ")
-com.enviar(coord)
+com.enviar(host, coord)
 uri = com.receber()
-srcom = SRCom(uri[0])
+srcom = SRCom(uri[0].decode())
 manual = Manual()
 
 
