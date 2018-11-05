@@ -22,8 +22,8 @@ msg = com.receber()
 coord = com.receber()
 lista = []
 dados = Dados(coord[0].decode(), lista)
-
-com.rpc(dados)
+robo = Robo(dados)
+com.rpc(dados, robo)
 host = coord[1]
 print(str(com.getURI()))
 
