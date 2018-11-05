@@ -13,38 +13,38 @@ class Coordenadas():
     def atualizarFrente (self):
         if self.orient == "L":
             self.x = self.x + 1
-        if self.orient == "O":
+        elif self.orient == "O":
             self.x = self.x - 1
-        if self.orient == "N":
+        elif self.orient == "N":
             self.y = self.y + 1
-        if self.orient == "S":
+        elif self.orient == "S":
             self.y = self.y -1
 
     def atualizarRe (self):
         if self.orient == "L":
             self.x = self.x - 1
             self.orient = "O"
-        if self.orient == "O":
+        elif self.orient == "O":
             self.x = self.x + 1
             self.orient = "L"
-        if self.orient == "N":
-            self.y = self.y + 1
+        elif self.orient == "N":
+            self.y = self.y - 1
             self.orient = "S"
-        if self.orient == "S":
-            self.y = self.y -1
+        elif self.orient == "S":
+            self.y = self.y + 1
             self.orient = "N"
 
     def atualizarDireita(self):
         if self.orient == "L":
             self.y = self.y - 1
             self.orient = "S"
-        if self.orient == "O":
+        elif self.orient == "O":
             self.y = self.y + 1
             self.orient = "N"
-        if self.orient == "N":
+        elif self.orient == "N":
             self.x = self.x + 1
             self.orient = "L"
-        if self.orient == "S":
+        elif self.orient == "S":
             self.x = self.x - 1
             self.orient = "O"
 
@@ -52,13 +52,13 @@ class Coordenadas():
         if self.orient == "L":
             self.y = self.y + 1
             self.orient = "N"
-        if self.orient == "O":
+        elif self.orient == "O":
             self.y = self.y - 1
             self.orient = "S"
-        if self.orient == "N":
+        elif self.orient == "N":
             self.x = self.x - 1
             self.orient = "O"
-        if self.orient == "S":
+        elif self.orient == "S":
             self.x = self.x + 1
             self.orient = "L"
 
