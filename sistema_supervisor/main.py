@@ -10,7 +10,7 @@ from discoveryRobo import *
 from com import *
 
 
-com = Com(65000)
+com = Com(65500)
 
 
 host = com.descoberta("SRequipe1")
