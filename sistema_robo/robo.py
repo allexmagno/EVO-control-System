@@ -1,6 +1,6 @@
 from movimento import *
 from dados import *
-
+from coordenadas import *
 
 class Robo:
 

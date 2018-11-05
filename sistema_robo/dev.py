@@ -1,9 +1,8 @@
-import threading
-from coordenadas import *
-from time import sleep
+from dados import *
 
-coord = Coordenadas(1,2,'n')
+list = []
+dados = Dados("00", list)
 
-print (coord.toString())
-c = "magno"
-
+print(dados.coordenadas.toString())
+dados.coordenadas.atualizarDireita()
+print(dados.coordenadas.toString())

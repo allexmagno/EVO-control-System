@@ -11,7 +11,7 @@ class SSCom:
         pass
 
     def getPosAtual(self):
-        self.com.enviar(self.dados.coordenadas.toString(), self.host)
+        self.dados.coordenadas.toString()
 
     def sedDestino(self):
         self.com.enviar(self.dados.getDestino().toString())
