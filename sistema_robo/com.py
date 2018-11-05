@@ -16,8 +16,8 @@ class Com(Thread):
         self.client.bind(('', self.porta))
         self.uri = ''
 
-    def rpc(self, dados):
-        self.srcom = SRCom(dados)
+    def rpc(self, dados, robo):
+        self.srcom = SRCom(dados,robo)
         self.deamon = Pyro4.Daemon(host=self.ip, port=64000)
         self.uri = self.deamon.register(self.srcom)
 

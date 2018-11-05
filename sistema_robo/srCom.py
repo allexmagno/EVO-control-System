@@ -1,4 +1,5 @@
 import Pyro4
+from robo import *
 
 @Pyro4.expose
 class SRCom:
@@ -6,13 +7,13 @@ class SRCom:
     #
     #Receber Robo como parametro
     #
-    def __init__(self, dados):
+    def __init__(self, dados, robo):
         self.dados = dados
-    #   self.robo = robo
+        self.robo = robo
 
 
     def setID(self, valor):
-        #self.robo.getID()
+        self.robo.getID()
         pass
 
     def getPosInicial(self):
@@ -22,7 +23,7 @@ class SRCom:
         pass
 
     def setMover(self, direcao):
-        self.dados.coordenadas.setX(self.dados.getCoordenadas().getX() + 1)
+        self.robo.setManual(direcao)
 
     def setTime(self):
         # Trocar a cor do LED robo

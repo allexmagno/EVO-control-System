@@ -1,6 +1,6 @@
 from dados import *
 from com import *
-#from robo import *
+from robo import *
 from broadcast import *
 from ssCom import *
 import time
@@ -22,8 +22,9 @@ msg = com.receber()
 coord = com.receber()
 lista = []
 dados = Dados(coord[0].decode(), lista)
+robo = Robo(dados)
 
-com.rpc(dados)
+com.rpc(dados, robo)
 host = coord[1]
 print(str(com.getURI()))
 
