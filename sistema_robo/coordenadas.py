@@ -3,7 +3,7 @@ class Coordenadas():
     def __init__(self, coordenadas):
         self.x = int(coordenadas[0])
         self.y= int(coordenadas[1])
-        self.orient = " "
+        self.orient = ''
         if self.x == 0 and self.y ==0:
             self.orient = "L"
         elif self.x == 6 and self.y ==6:
@@ -28,6 +28,7 @@ class Coordenadas():
             self.x = self.x + 1
             self.orient = "L"
         elif self.orient == "N":
+
             self.y = self.y - 1
             self.orient = "S"
         elif self.orient == "S":

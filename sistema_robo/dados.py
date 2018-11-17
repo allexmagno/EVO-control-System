@@ -1,6 +1,7 @@
 from coordenadas import *
 from estrategia import *
 
+
 class Dados:
 
     def __init__(self, coordenadas, lista):
@@ -11,8 +12,8 @@ class Dados:
         return self.coordenadas
 
 
-    def setDestino(self):
-        pass
+    def setDestino(self, coordenada):
+        return True
 
     def setCoordenadas(self, x, y):
         self.coordenadas.setCoordenada(x, y)
@@ -20,5 +21,10 @@ class Dados:
     def getEstrategia(self):
         pass
 
+
     def getListaDeCacas(self, lista):
         self.estrategia.atualizaLista(lista)
+
+    def getDestino(self):
+        pass
+
