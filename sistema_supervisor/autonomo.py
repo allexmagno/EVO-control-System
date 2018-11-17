@@ -19,7 +19,7 @@ class Autonomo:
             msgSR = self.com.receber()
             msg = msgSR[0].decode().split("|")
             if msg[0] == "destino":
-                serial = serial()
+                serial = Serial()
                 ##Encaminhar para SA destino
 
                 #Nova Lista recebida pelo SA

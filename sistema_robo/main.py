@@ -1,8 +1,9 @@
 from dados import *
 from com import *
 from serial import *
-#from robo import *
+from robo import *
 from broadcast import *
+from coordenadas import *
 from ssCom import *
 import time
 import time
@@ -65,17 +66,19 @@ elif(resposta[0] == "auto"):
                     cordLista = []
                     cordLista.append(cordenadas[j][0])
                     cordLista.append(cordenadas[j][1])
-                    listCord.append(cordLista)
+                    cordenadasLista = Coordenadas(cordLista)
+                    listCord.append(cordenadasLista)
                     j += 1
         i += 1
 
     print(cordInicial)
     print(listCord)
 
+    coordenadaInicial = Coordenadas(cordInicial)
     ## Cord Inicial e Lista recebida
     #Chamar estrategia e comunicar com SS pela porta especifica
 
-    dado = Dados(cordInicial,listCord)
+    dado = Dados(coordenadaInicial,listCord)
     print(hostSS)
     robo = Robo(dado)
 
@@ -153,10 +156,10 @@ elif(resposta[0] == "manual"):
     #Começar Pyro#
     lista = []
     dados = Dados(coord[0], lista)
-    # robo = Robo(dados)
+    robo = Robo(dados)
 
     comSS.rpc(dados,robo)
-    uri = com.getURI()
+    uri = comSS.getURI()
 
     comSS.enviar(str(uri),hostSS)
     comSS.start()

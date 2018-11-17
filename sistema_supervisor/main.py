@@ -67,12 +67,13 @@ elif (msg == "auto"):
 elif (msg == "manual"):
     msg = msg + ",00"
     clienteSS.enviar(host,msg)
-    uri = clienteSS.receber().decode()
+    uri2 = clienteSS.receber()
+    uri = uri2[0].decode()
 
     print("Uri:" + uri)
 
     manual = Manual()
-    srcom = SRcom(uri)
+    srcom = SRCom(uri)
 
     x = ''
     while x != "x":

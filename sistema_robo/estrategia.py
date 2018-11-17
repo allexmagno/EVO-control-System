@@ -18,13 +18,13 @@ class Estrategia:
         x_atual = coordenadas.getX()
         y_atual = coordenadas.getY()
 
-        auxDistancia = sqrt(((self.lista[0].getX() - x_atual) ** 2) + ((self.lista[0].getY() - y_atual) ** 2))
+        auxDistancia = sqrt(((int(self.lista[0].getX()) - x_atual) ** 2) + ((int(self.lista[0].getY()) - y_atual) ** 2))
 
         while i < (len(listaDeCacas)):
 
-            if auxDistancia > sqrt(((self.lista[i].getX() - x_atual) ** 2) + ((self.lista[i].getY() - y_atual) ** 2)):
+            if auxDistancia > sqrt(((int(self.lista[i].getX()) - x_atual) ** 2) + ((int(self.lista[i].getY()) - y_atual) ** 2)):
 
-                auxDistancia = sqrt(((self.lista[i].getX() - x_atual) ** 2) + ((self.lista[i].getY() - y_atual) ** 2))
+                auxDistancia = sqrt(((int(self.lista[i].getX()) - x_atual) ** 2) + ((int(self.lista[i].getY()) - y_atual) ** 2))
                 j = i
             i = i + 1
 

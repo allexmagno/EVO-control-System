@@ -1,5 +1,5 @@
 import threading
-from coordenada import *
+from coordenadas import *
 
 class SSCom:
     def __init__(self, com, host, dados):
@@ -11,11 +11,9 @@ class SSCom:
         self.com.enviar("posAtual|" + posAtual.toString(), self.host)
 
     def getPosAtual(self):
-<<<<<<< HEAD
         self.dados.coordenadas.toString()
-=======
         print(self.dados.coordenadas.toString())
->>>>>>> d5f10c6d2e49f7f627c040ef2cc882b1123f3877
+
 
     def setDestino(self,destino):
         self.com.enviar("destino|" + destino.toString(),self.host)
