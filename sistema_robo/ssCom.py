@@ -1,5 +1,5 @@
 import threading
-
+from coordenada import *
 
 class SSCom:
     def __init__(self, com, host, dados):
@@ -7,14 +7,14 @@ class SSCom:
         self.dados = dados
         self.host = host
 
-    def setPosAtual(self):
-        pass
+    def setPosAtual(self,posAtual):
+        self.com.enviar("posAtual|" + posAtual.toString(), self.host)
 
     def getPosAtual(self):
         print(self.dados.coordenadas.toString())
 
-    def sedDestino(self):
-        self.com.enviar(self.dados.getDestino().toString())
+    def setDestino(self,destino):
+        self.com.enviar("destino|" + destino.toString(),self.host)
 
     def setValidar(self, x, y):
         coordenada = "(" + x + "," + y + ")"

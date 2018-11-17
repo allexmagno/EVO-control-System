@@ -20,3 +20,5 @@ class Dados:
     def getEstrategia(self):
         pass
 
+    def getListaDeCacas(self, lista):
+        self.estrategia.atualizaLista(lista)

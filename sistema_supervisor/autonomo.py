@@ -1,55 +1,41 @@
 import threading
 import socket
 import subprocess
+from serial import *
 from broadcast import *
+from serial import *
 
 
 class Autonomo:
 
-    def __init__(self, coordInicial, lista):
+    def __init__(self, coordInicial, lista, com):
         self.coordInicial = coordInicial
         self.lista = lista
+        self.com = com
 
     def inicia(self):
-        ipSS = subprocess.getoutput("hostname -I | cut -f1 -d \" \" ")
-        print(ipSS)
+        msgSR = ("","")
+        while msgSR == ("",""):
+            msgSR = self.com.receber()
+            msg = msgSR[0].decode().split("|")
+            if msg[0] == "destino":
+                serial = serial()
+                ##Encaminhar para SA destino
 
-        divulgaIP = Broadcast()
-        divulgaIP.cast(ipSS)
+                #Nova Lista recebida pelo SA
+                novaLista = []
+                self.lista = novaLista
+                listaSerializada = serial.serializa(novaLista)
 
-        host = '0.0.0.0'
-        # Porta para o Robo mandar as instruções do modo autonomo#
-        port = 63030
+                coordAdv = (6,6)
 
-        serverSS = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        serverSS.bind((host, port))
+                resp = "confirmaMov|" + coordAdv[0] + coordAdv[1] + "|" + listaSerializada
+                self.com.enviar(msgSR[1],resp)
 
-        serverSS.listen(10)
 
-        print("Ouvindo... porta " + str(port))
-
-        def clienteSS(cliente_socket):
-            resposta = cliente_socket.recv(1024)
-
-            split = resposta.split('|')
-            i = 0
-
-            if(split[i] == "destino"):
-                ##Informar ao SA proximo destino do robo
-                ##Encaminhar ao robo situação atualizada do MAPA posição adversario e lista de caças()
+            elif msg[0] == "validar":
                 pass
-            elif(split[i] == "encontrada"):
-                ##Solicitar validação do SA para a caça
-                ##Confirmar ou nao validação e enviar situação do Mapa atualizada
-                pass
-            elif(split[i] == "..."):
-                pass
-
-        while (True):
-            client, addr = serverSS.accept()
-            cliente = threading.Thread(target=clienteSS, args=(client,))
-            cliente.start()
-
+            msgSR = ("", "")
 
     def autonomo(self, view):
         print(view)

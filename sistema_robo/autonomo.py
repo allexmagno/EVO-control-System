@@ -1,12 +1,14 @@
 from dados import *
 from robo import *
 from discoverySS import *
+from ssCom import *
 import socket
 
 class Autonomo:
 
-    def __init__(self,robo):
+    def __init__(self,robo, dado):
         self.robo = robo
+        self.dado = dado
 
     def inicia(self):
         discovery = Discovery()
@@ -17,7 +19,11 @@ class Autonomo:
         clienteSR.connect((ipSS[0].decode(), port))
 
         ##
-        #Começar a tratar qual a proxima caça e proximo movimentp
+        #Começar a tratar qual a proxima caça e proximo movimento
+
+        destino = self.dados.getEstrategia()
+        clienteSR.send("destino|" + destino.encode())
+        self.robo.setAutonomo(destino)
 
     def encontraCaca(self):
         pass

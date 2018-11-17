@@ -9,66 +9,38 @@ from serial import *
 from discoveryRobo import *
 from com import *
 
-
-com = Com(65000)
-
-
-host = com.descoberta("SRequipe1")
-
+clienteSS = Com(65000)
+host = clienteSS.descoberta("SRequipe1")
+print(host)
 coord = input("Coordenada inicial do Robo: ")
-com.enviar(host, coord)
-uri = com.receber()
-print(uri[0].decode())
-srcom = SRCom(uri[0].decode())
-manual = Manual()
-
-
-x = ''
-while x != "x":
-   x = manual.controle()
-
-   if (x == "w"):
-       print(srcom.setMover("frente"))
-   elif (x == "a"):
-       srcom.setMover("esquerda")
-   elif (x == "s"):
-       srcom.setMover("retornar")
-   elif (x == "d"):
-       srcom.setMover("direita")
-   elif x == "c":
-       print(srcom.getPosAtual())
-
-
-
-'''
-discovery = Discovery()
-
-ipRobo = discovery.encontraIP()
-port = 61030
-
-clienteSS = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-clienteSS.connect((ipRobo[0].decode(),port))
+clienteSS.enviar(host, coord)
 
 ## Receber informação do SA
-# STUB :
+
+##
+#   Provavelmente terá uma Classe para comunicar com SA
+#   Esta comunicação (com SA) será feito primeiro
+#   Portanto o modo de jogo já estará decidido
+##
+
 msg = input("digite a mensagem: ")
 
 if (msg == "getid"):
-    clienteSS.send(msg.encode())
-    print(clienteSS.recv(1024).decode())
+    clienteSS.enviar(host,msg)
+    print(clienteSS.receber())
 
 elif (msg == "auto"):
     estadoRobo = ""
 
-    while(estadoRobo != "ready"):
-        clienteSS.send(msg.encode())
-        estadoRobo = clienteSS.recv(1024)
-        estadoRobo = estadoRobo.decode()
+    while (estadoRobo != "ready"):
+        clienteSS.enviar(host,msg)
+        estadoRobo = clienteSS.receber()
+        estadoRobo = estadoRobo[0].decode()
 
     ## Receber do SA Cordenada Inicial e Lista de caças
-    #STUB:
+    # STUB:
     Lista = []
-    cordI = [0,0]
+    cordI = [0, 0]
     cord0 = [3, 2]
     cord1 = [6, 1]
     cord2 = [5, 5]
@@ -77,24 +49,25 @@ elif (msg == "auto"):
     Lista.append(cord1)
     Lista.append(cord2)
 
-    #serializar dados e encaminhar ao SR
+    # serializar dados e encaminhar ao SR
     serializa = Serial()
     strSerial = serializa.serializa(Lista)
 
-    #Classe "Autonomo" irá tratar do recebimento das mensagens do SR e transmitirá ao SA
-    aut = Autonomo(cordI,Lista)
+    # Classe "Autonomo" irá tratar do recebimento das mensagens do SR e transmitirá ao SA
+    aut = Autonomo(cordI, Lista, clienteSS)
 
-    inicio = "cord|" + str(cordI[0]) + str(cordI[1]) + "|lista|" + strSerial
+    inicio = "cord|" + coord + "|lista|" + strSerial
 
-    #Envia cordenada Inicial e Lista de caças para o Robo
-    clienteSS.send(inicio.encode())
+    # Envia cordenada Inicial e Lista de caças para o Robo
+    clienteSS.enviar(host,inicio)
 
-    #Inicial autonomo para receber mensagens na porta especifica
+    # Inicial autonomo para receber mensagens na porta especifica
     aut.inicia()
 
 elif (msg == "manual"):
-    clienteSS.send(msg.encode())
-    uri = clienteSS.recv(1024).decode()
+    msg = msg + ",00"
+    clienteSS.enviar(host,msg)
+    uri = clienteSS.receber().decode()
 
     print("Uri:" + uri)
 
@@ -104,20 +77,18 @@ elif (msg == "manual"):
     x = ''
     while x != "x":
         x = manual.controle()
-        if(x == "w"):
+
+        if (x == "w"):
             print(srcom.setMover("frente"))
-        elif(x == "a"):
+        elif (x == "a"):
             srcom.setMover("esquerda")
-        elif(x == "s"):
+        elif (x == "s"):
             srcom.setMover("retornar")
-        elif(x == "d"):
+        elif (x == "d"):
             srcom.setMover("direita")
-        elif(x == "(espaço)"):
-            pass
-        elif(x == "(c)"):
-            print(srcom.getPosInicial())
+        elif x == "c":
+            print(srcom.getPosAtual())
 
 
 elif (msg == "whatever"):
     pass
-'''

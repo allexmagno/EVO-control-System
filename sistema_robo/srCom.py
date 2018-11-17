@@ -1,5 +1,5 @@
 import Pyro4
-from robo import *
+#from robo import *
 
 @Pyro4.expose
 class SRCom:

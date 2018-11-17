@@ -1,5 +1,6 @@
 from movimento import *
 from dados import *
+from coordenada import *
 
 
 class Robo:
@@ -7,7 +8,6 @@ class Robo:
     def __init__(self, dados):
         self.dados = dados
         self.mover = Movimento('outA', 'outD', 200)
-
 
     def setManual(self,  comando):
         if comando == "direita":
@@ -26,52 +26,66 @@ class Robo:
             self.dados.getCoordenadas().atualizarRe()
 
 
-    def setAutonomo(self, caca):
-        coordProxima = Coordenadas(caca)
+    def setAutonomo(self,ssCOM):
+        coordProxima = self.dados.getEstrategia(self.dados.getCoordenadas())
+        ssCOM.setDestino(coordProxima)
+
 
         if coordProxima.getX() - self.coordAtual.getX() > 0:
             if self.dados.setDestino(Coordenadas(dados.getCoordenadas().getX() + 1, dados.getCoordenadas().getY(), "")):
                 if self.dados.getCoordenadas().getOr()=="L":
                     self.setManual("frente")
-                if self.dados.getCoordenadas().getOr()=="O":
+                elif self.dados.getCoordenadas().getOr()=="O":
                     self.setManual("retornar")
-                if self.dados.getCoordenadas().getOr() == "N":
+                elif self.dados.getCoordenadas().getOr() == "N":
                     self.setManual("direita")
-                if self.dados.getCoordenadas().getOr() == "S":
+                elif self.dados.getCoordenadas().getOr() == "S":
                     self.setManual("esquerda")
 
-        if coordProxima.getX() - self.coordAtual.getX() < 0:
+        elif coordProxima.getX() - self.coordAtual.getX() < 0:
             if self.dados.setDestino(Coordenadas(dados.getCoordenadas().getX() - 1, dados.getCoordenadas().getY(), "")):
                 if self.dados.getCoordenadas().getOr() == "L":
                     self.setManual("retornar")
-                if self.dados.getCoordenadas().getOr() == "O":
+                elif self.dados.getCoordenadas().getOr() == "O":
                     self.setManual("frente")
-                if self.dados.getCoordenadas().getOr() == "N":
+                elif self.dados.getCoordenadas().getOr() == "N":
                     self.setManual("esquerda")
-                if self.dados.getCoordenadas().getOr() == "S":
+                elif self.dados.getCoordenadas().getOr() == "S":
                     self.setManual("direita")
 
-        if coordProxima.getY() - self.coordAtual.getY() < 0:
+        elif coordProxima.getY() - self.coordAtual.getY() < 0:
             if self.dados.setDestino(Coordenadas(dados.getCoordenadas().getX(), dados.getCoordenadas().getY() - 1, "")):
                 if self.dados.getCoordenadas().getOr() == "L":
                     self.setManual("direita")
-                if self.dados.getCoordenadas().getOr() == "O":
+                elif self.dados.getCoordenadas().getOr() == "O":
                     self.setManual("esquerda")
-                if self.dados.getCoordenadas().getOr() == "N":
+                elif self.dados.getCoordenadas().getOr() == "N":
                     self.setManual("retornar")
-                if self.dados.getCoordenadas().getOr() == "S":
+                elif self.dados.getCoordenadas().getOr() == "S":
                     self.setManual("frente")
 
-        if coordProxima.getY() - self.coordAtual.getY() > 0:
+        elif coordProxima.getY() - self.coordAtual.getY() > 0:
             if self.dados.setDestino(Coordenadas(dados.getCoordenadas().getX(), dados.getCoordenadas().getY() + 1, "")):
                 if self.dados.getCoordenadas().getOr() == "L":
                     self.setManual("esquerda")
-                if self.dados.getCoordenadas().getOr() == "O":
+                elif self.dados.getCoordenadas().getOr() == "O":
                     self.setManual("direita")
-                if self.dados.getCoordenadas().getOr() == "N":
+                elif self.dados.getCoordenadas().getOr() == "N":
                     self.setManual("frente")
-                if self.dados.getCoordenadas().getOr() == "S":
+                elif self.dados.getCoordenadas().getOr() == "S":
                     self.setManual("retornar")
 
+        else:
+            #Caso seja a posição de uma caça enviar um solicitação de validação
+            situacao = ssCOM.setValidar(coordProxima.getX(),coordProxima.getY())
+            if situacao == "ok":
+                pass
+            elif situacao == "invalida":
+                pass
 
+        # Passar a posiçao atual independente de ser uma caça ou nao
+        ssCOM.setPosAtual(coordProxima)
 
+        #Confirmar se A posição está correta
+    def atualizaLista(self,lista):
+        self.dados.getListaDeCacas(lista)
