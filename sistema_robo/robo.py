@@ -26,10 +26,12 @@ class Robo:
             self.dados.getCoordenadas().atualizarRe()
 
 
-    def setAutonomo(self, caca):
-        coordProxima = Coordenadas(caca)
+    def setAutonomo(self, ssCom):
+        coordProxima = self.dados.getEstrategia(self.dados.getCoordenadas())
+        coordAtual = self.dados.getCoordenadas()
 
-        if coordProxima.getX() - self.coordAtual.getX() > 0:
+        if coordProxima.getX() - coordAtual.getX() > 0:
+
             if self.dados.setDestino(Coordenadas(dados.getCoordenadas().getX() + 1, dados.getCoordenadas().getY(), "")):
                 if self.dados.getCoordenadas().getOr()=="L":
                     self.setManual("frente")
@@ -40,7 +42,7 @@ class Robo:
                 if self.dados.getCoordenadas().getOr() == "S":
                     self.setManual("esquerda")
 
-        if coordProxima.getX() - self.coordAtual.getX() < 0:
+        if coordProxima.getX() - coordAtual.getX() < 0:
             if self.dados.setDestino(Coordenadas(dados.getCoordenadas().getX() - 1, dados.getCoordenadas().getY(), "")):
                 if self.dados.getCoordenadas().getOr() == "L":
                     self.setManual("retornar")
@@ -51,7 +53,7 @@ class Robo:
                 if self.dados.getCoordenadas().getOr() == "S":
                     self.setManual("direita")
 
-        if coordProxima.getY() - self.coordAtual.getY() < 0:
+        if coordProxima.getY() - coordAtual.getY() < 0:
             if self.dados.setDestino(Coordenadas(dados.getCoordenadas().getX(), dados.getCoordenadas().getY() - 1, "")):
                 if self.dados.getCoordenadas().getOr() == "L":
                     self.setManual("direita")
@@ -62,7 +64,7 @@ class Robo:
                 if self.dados.getCoordenadas().getOr() == "S":
                     self.setManual("frente")
 
-        if coordProxima.getY() - self.coordAtual.getY() > 0:
+        if coordProxima.getY() - coordAtual.getY() > 0:
             if self.dados.setDestino(Coordenadas(dados.getCoordenadas().getX(), dados.getCoordenadas().getY() + 1, "")):
                 if self.dados.getCoordenadas().getOr() == "L":
                     self.setManual("esquerda")
