@@ -7,4 +7,9 @@ class Manual:
 
     def controle(self):
 
-        return input("(w) Frente\n (s) Retornar\n (d) Direirta\n (a) Esquerda\n (espaço) Caça\n (c) Coordenadas")
+        return input("(w) Frente\n"
+                     "(s) Retornar\n"
+                     "(d) Direirta\n"
+                     "(a) Esquerda\n"
+                     "(espaço) Caça\n"
+                     "(c) Coordenadas\n")

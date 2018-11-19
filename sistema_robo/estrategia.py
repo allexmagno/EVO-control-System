@@ -1,11 +1,35 @@
-class Estrategia:
+from dados import *
+from math import sqrt
 
+class Estrategia:
 
     def __init__(self, lista):
         self.lista = lista
 
-    def getEstrategia(self):
+    def getEstrategia(self, coordenadas):
+        self.ordenaSequenciaCaca(self.lista,coordenadas)
         return self.lista[0]
+
+    def ordenaSequenciaCaca(self,lista, coordenadas):
+        i = 0
+        j = 0
+
+        listaDeCacas = self.lista
+        x_atual = coordenadas.getX()
+        y_atual = coordenadas.getY()
+
+        auxDistancia = sqrt(((int(self.lista[0].getX()) - x_atual) ** 2) + ((int(self.lista[0].getY()) - y_atual) ** 2))
+
+        while i < (len(listaDeCacas)):
+
+            if auxDistancia > sqrt(((int(self.lista[i].getX()) - x_atual) ** 2) + ((int(self.lista[i].getY()) - y_atual) ** 2)):
+
+                auxDistancia = sqrt(((int(self.lista[i].getX()) - x_atual) ** 2) + ((int(self.lista[i].getY()) - y_atual) ** 2))
+                j = i
+            i = i + 1
+
+        self.lista = listaDeCacas
+
 
     def setEstrategia(self, lista):
         i = 0
@@ -18,9 +42,9 @@ class Estrategia:
         while i < (len(self.sequencia)):
 
             if aux > (((self.sequencia[i].getX() - x_atual) ** 2) + (self.sequencia[i].getY() - y_atual) ** 2) ** (
-                        1 / 2):
+                    1 / 2):
                 aux = (((self.sequencia[i].getX() - x_atual) ** 2) + (self.sequencia[i].getY() - y_atual) ** 2) ** (
-                    1 / 2)
+                        1 / 2)
                 j = i
             i = i + 1
 
@@ -61,4 +85,5 @@ class Estrategia:
         self.coordAtual = self.nav.getCoord()
 
     def atualizaLista(self, lista):
-        self.estrategia.setEstrategia(lista)
+        self.lista = lista
+
