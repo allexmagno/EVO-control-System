@@ -15,30 +15,96 @@ class Autonomo:
 
     def inicia(self):
         msgSR = ("","")
+        novaLista = []
+
+        cord0 = [3, 2]
+        cord1 = [6, 1]
+        cord2 = [5, 5]
+
+        novaLista.append(cord0)
+        novaLista.append(cord1)
+        novaLista.append(cord2)
+
         while msgSR == ("",""):
             msgSR = self.com.receber()
             msg = msgSR[0].decode().split("|")
             if msg[0] == "destino":
                 serial = Serial()
+                print("msg robo: " + msg[0] + msg[1])
                 ##Encaminhar para SA destino
 
                 #Nova Lista recebida pelo SA
-                novaLista = []
+
                 self.lista = novaLista
                 listaSerializada = serial.serializa(novaLista)
 
                 coordAdv = (6,6)
 
-                resp = "confirmaMov|" + coordAdv[0] + coordAdv[1] + "|" + listaSerializada
+                resp = "confirmaMov|" + listaSerializada + "|" + str(coordAdv[0]) + str(coordAdv[1]) + "|"
                 self.com.enviar(msgSR[1],resp)
 
 
             elif msg[0] == "validar":
-                pass
+                ## Tratar a mensagem e verificar com SA se a posição passada pelo SR existe uma caça
+                ##Confirmar ao SR
+
+                print("msg robo: " + msg[0] + msg[1])
+                serial = Serial()
+                ##Encaminhar para SA destino
+
+                # Nova Lista recebida pelo SA
+                novaLista = []
+
+
+
+                cord0 = [3, 2,]
+                cord1 = [6, 1,]
+                cord2 = [5, 5,]
+
+                if(msg[1] != cord0):
+                    novaLista.append(cord0)
+                elif(msg[1] != cord1):
+                    novaLista.append(cord1)
+                elif(msg[1] != cord2):
+                    novaLista.append(cord2)
+
+                self.lista = novaLista
+                listaSerializada = serial.serializa(novaLista)
+
+                coordAdv = (6, 6)
+
+                resp = "validada|" + listaSerializada + "|" + str(coordAdv[0]) + str(coordAdv[1])
+                self.com.enviar(msgSR[1], resp)
+
+            elif msg[0] == "posAtual":
+                print("msg robo: " + msg[0] + msg[1])
+
+                serial = Serial()
+                ##Encaminhar para SA destino
+
+                #Nova Lista recebida pelo SA
+                novaLista = []
+
+                cord0 = [3, 2]
+                cord1 = [6, 1]
+                cord2 = [5, 5]
+
+                novaLista.append(cord0)
+                novaLista.append(cord1)
+                novaLista.append(cord2)
+
+                self.lista = novaLista
+                listaSerializada = serial.serializa(novaLista)
+
+                coordAdv = (6, 6)
+
+                resp = "mapa|" + listaSerializada + "|" + str(coordAdv[0]) + str(coordAdv[1])
+                self.com.enviar(msgSR[1], resp)
             msgSR = ("", "")
 
     def autonomo(self, view):
         print(view)
 
-    def setLista(self):
+    def ComunicaSA(self):
+        ##chamar alguma classe para comunicar com SA e receber a situação do mapa
         pass

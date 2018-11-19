@@ -19,8 +19,8 @@ class SSCom:
         self.com.enviar("destino|" + destino.toString(),self.host)
 
     def setValidar(self, x, y):
-        coordenada = "(" + x + "," + y + ")"
-        self.com.enviar(coordenada)
+        coordenada = "(" + str(x) + "," + str(y) + ")"
+        self.com.enviar("validar|" + coordenada,self.host)
         caca = self.com.receber()
         if(caca[0] == "ok"):
             self.dados.setcaca(coordenada)

@@ -1,3 +1,5 @@
+from coordenadas import *
+
 class Serial:
     def __init__(self):
         pass
@@ -12,14 +14,15 @@ class Serial:
                 serial = serial + "/" + str(lista[i][0]) + str(lista[i][1])
             i += 1
         return serial
-    def deserializa(self, string):
+
+    def desserializa(self, string):
         i = 0
         lista = []
         coords = string.split("/")
+        print(coords)
         while i < len(coords):
-            lista.append(coords[i][0])
-            lista.append(coords[i][1])
-
+            coorde = Coordenadas((coords[i][0],coords[i][1]))
+            lista.append(coorde)
             i += 1
 
         return lista

@@ -22,7 +22,6 @@ coord = comSS.receber()
 hostSS = coord[1]
 
 ipRobo = subprocess.getoutput("hostname -I | cut -f1 -d \" \" ")
-print(ipRobo)
 
 #Divulga IP do robo por broadcast#
 #Caso perca a conexão com o SS voltar a mandar broadcast
@@ -36,6 +35,7 @@ if(resposta[0] == "getid"):
     comSS.enviar("15",hostSS)
 
 elif(resposta[0] == "auto"):
+    print("auto")
     comSS.enviar("ready",hostSS)
     resp = comSS.receber()
 
@@ -78,7 +78,7 @@ elif(resposta[0] == "auto"):
     ## Cord Inicial e Lista recebida
     #Chamar estrategia e comunicar com SS pela porta especifica
 
-    dado = Dados(coordenadaInicial,listCord)
+    dado = Dados(cordInicial,listCord)
     print(hostSS)
     robo = Robo(dado)
 
@@ -96,13 +96,14 @@ elif(resposta[0] == "auto"):
         msgSS = comSS.receber()
         msg = msgSS[0].decode().split("|")
         if(msg[0] == "confirmaMov"):
-            listaAtual = msg2[1]
+            listaAtual = msg[1]
+
+            # Desserializar lista
             listaDesserealizada = serial.desserializa(listaAtual)
             dado.getListaDeCacas(listaDesserealizada)
             robo.atualizaLista(listaDesserealizada)
 
-            # Desserializar lista
-            coordenadaAdv = msg2[3]
+            coordenadaAdv = msg[2]
 
             msgSS2 = comSS.receber()
             msg2 = msgSS[0].decode().split("|")
@@ -114,7 +115,7 @@ elif(resposta[0] == "auto"):
                 dado.getListaDeCacas(listaDesserealizada)
                 robo.atualizaLista(listaDesserealizada)
 
-                coordenadaAdv = msg2[3]
+                coordenadaAdv = msg2[2]
         elif msg[0] == "mapa":
                 listaAtual = msg[1]
 
@@ -123,7 +124,7 @@ elif(resposta[0] == "auto"):
                 dado.getListaDeCacas(listaDesserealizada)
                 robo.atualizaLista(listaDesserealizada)
 
-                coordenadaAdv = msg[3]
+                coordenadaAdv = msg[2]
         elif msg[0] == "validada":
             listaAtual = msg2[1]
 
@@ -132,7 +133,7 @@ elif(resposta[0] == "auto"):
             dado.getListaDeCacas(listaDesserealizada)
             robo.atualizaLista(listaDesserealizada)
 
-            coordenadaAdv = msg2[3]
+            coordenadaAdv = msg2[2]
         elif msg[0] == "naoValidada":
             listaAtual = msg2[1]
 
@@ -141,7 +142,7 @@ elif(resposta[0] == "auto"):
             dado.getListaDeCacas(listaDesserealizada)
             robo.atualizaLista(listaDesserealizada)
 
-            coordenadaAdv = msg2[3]
+            coordenadaAdv = msg2[2]
         elif msg[0] == "paradaEmergencia":
             break
         msgSS = ("","")

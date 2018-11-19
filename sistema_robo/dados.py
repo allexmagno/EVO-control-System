@@ -5,7 +5,7 @@ from estrategia import *
 class Dados:
 
     def __init__(self, coordenadas, lista):
-        self.coordenadas = coordenadas
+        self.coordenadas = Coordenadas(coordenadas)
 
         self.estrategia = Estrategia(lista)
 

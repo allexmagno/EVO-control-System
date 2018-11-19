@@ -34,6 +34,7 @@ class Robo:
         if coordProxima.getX() - coordAtual.getX() > 0:
 
             if self.dados.setDestino(Coordenadas((self.dados.getCoordenadas().getX() + 1, self.dados.getCoordenadas().getY()))):
+                atual = Coordenadas((self.dados.getCoordenadas().getX() + 1, self.dados.getCoordenadas().getY()))
                 if self.dados.getCoordenadas().getOr()=="L":
                     self.setManual("frente")
                 elif self.dados.getCoordenadas().getOr()=="O":
@@ -45,6 +46,7 @@ class Robo:
 
         elif coordProxima.getX() - coordAtual.getX() < 0:
             if self.dados.setDestino(Coordenadas((self.dados.getCoordenadas().getX() - 1, self.dados.getCoordenadas().getY()))):
+                atual = Coordenadas((self.dados.getCoordenadas().getX() - 1, self.dados.getCoordenadas().getY()))
                 if self.dados.getCoordenadas().getOr() == "L":
                     self.setManual("retornar")
                 elif self.dados.getCoordenadas().getOr() == "O":
@@ -56,6 +58,7 @@ class Robo:
 
         elif coordProxima.getY() - coordAtual.getY() < 0:
             if self.dados.setDestino(Coordenadas((self.dados.getCoordenadas().getX(), self.dados.getCoordenadas().getY() - 1))):
+                atual = Coordenadas((self.dados.getCoordenadas().getX(), self.dados.getCoordenadas().getY() - 1))
                 if self.dados.getCoordenadas().getOr() == "L":
                     self.setManual("direita")
                 elif self.dados.getCoordenadas().getOr() == "O":
@@ -67,6 +70,7 @@ class Robo:
 
         elif coordProxima.getY() - coordAtual.getY() > 0:
             if self.dados.setDestino(Coordenadas((self.dados.getCoordenadas().getX(), self.dados.getCoordenadas().getY() + 1))):
+                atual = Coordenadas((self.dados.getCoordenadas().getX(), self.dados.getCoordenadas().getY() + 1))
                 if self.dados.getCoordenadas().getOr() == "L":
                     self.setManual("esquerda")
                 elif self.dados.getCoordenadas().getOr() == "O":
@@ -77,6 +81,7 @@ class Robo:
                     self.setManual("retornar")
 
         else:
+            atual = Coordenadas((self.dados.getCoordenadas().getX(), self.dados.getCoordenadas().getY()))
             #Caso seja a posição de uma caça enviar um solicitação de validação
             situacao = ssCOM.setValidar(coordProxima.getX(),coordProxima.getY())
             if situacao == "ok":
@@ -85,7 +90,7 @@ class Robo:
                 pass
 
         # Passar a posiçao atual independente de ser uma caça ou nao
-        ssCOM.setPosAtual(coordProxima)
+        ssCOM.setPosAtual(atual)
 
         #Confirmar se A posição está correta
     def atualizaLista(self,lista):
