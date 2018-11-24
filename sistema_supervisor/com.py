@@ -11,7 +11,8 @@ class Com():
         self.porta = porta
         self.client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.client.bind(('', self.porta))
-        self.host = ''
+        self.roboPorta = 0
+        self.roboIP = ''
 
 
     def reconectar(self):
@@ -24,11 +25,14 @@ class Com():
     def enviar(self, host, msg):
         self.client.sendto(msg.encode(), host)
 
+    def getRobo(self):
+
+        return self.roboIP, self.roboPorta
+
     def rx(self):
         def receber_msg():
 
             while True:
-                print("esperando mensagem")
                 msg = self.client.recvfrom(1024)
 
                 with compartilhados.sr_lock:
@@ -43,15 +47,9 @@ class Com():
         a.start()
     def descoberta(self):
         print("procurando robo")
-        msg = self.receber_inicial()
+        msg = self.client.recvfrom(1024)
 
-        print("host econtrado")
+        print("Robo econtrado")
         self.enviar(msg[1], "SSequipe1")
-        return msg
-
-
-
-if __name__ == '__main__':
-    com = Com(60000)
-
-    com.receber()
+        self.roboIP, self.roboPorta = msg[1]
+        return msg[0].decode()

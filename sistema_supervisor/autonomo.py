@@ -17,10 +17,8 @@ class Autonomo(Thread):
         while True:
 
             compartilhados.autonomo_event.wait()
-            print("autonomo")
 
             with compartilhados.autonomo_lock:
-                print("lendo msg no autonomo")
                 msg = deepcopy(compartilhados.autonomo_msg)
                 msg = msg['cmd']
                 if msg == SS_to_SS.MovendoPara:
@@ -28,7 +26,8 @@ class Autonomo(Thread):
                     print(x, y)
 
                 elif msg == SS_to_SS.ValidaCaca:
-                    pass
+                    x, y = self.distributor.getCoord()
+                    print("SOLICITA VALIDAR CAÇA NA POSIÇÂO: ", x, y)
 
                 # Continuar todas as opções
                 compartilhados.autonomo_event.clear()

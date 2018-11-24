@@ -2,7 +2,7 @@ import socket
 import threading
 import time
 
-
+'''
 client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 client.bind(('', 4875))
 
@@ -10,7 +10,7 @@ while True:
 
     a = input("=> ")
     client.sendto(a.encode(),('localhost', 65000))
-'''
+
 
 
 a_s = threading.Lock()
@@ -51,7 +51,19 @@ def b1():
 
 
 t1 = threading.Thread(target=a1).start()
-
+a = input("a: ")
 
 t2 = threading.Thread(target=b1).start()
 '''
+
+a = [{'x': 3, 'y': 3}, {'x': 334, 'y': 3}, {'x': 3, 'y': 6}, {'x': 3, 'y': 5}]
+while len(a) > 0:
+    c = int(input("c: "))
+    b = int(input("b: "))
+    caca = {'x': c, 'y': b}
+    for i in range(len(a)):
+        print('for')
+        if a[i]['x'] == caca['x'] and a[i]['y'] == caca['y']:
+            print(a[i])
+            del a[i]
+            break

@@ -38,14 +38,15 @@ while True:
 
     if 'modo' in msg:
 
-        if msg['modo'] == 'autonomo':
+        if msg['modo'] == 'auto':
+            print("MODO AUTONOMO\n")
             print("Iniciando modo autonomo")
             auto = Autonomo(distributor)
             auto.start()
 
         elif msg['modo'] == 'manual':
-
-            manual = Manual()
+            print("MODO MANUAL\n")
+            manual = Manual(msg['uri'])
             manual.start()
 
         else:

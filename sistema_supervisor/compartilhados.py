@@ -2,7 +2,7 @@ from threading import Lock, Event, Semaphore
 
 def init():
     global sa_lock, sa_event, sa_msg, sw_event, sw_lock, sw_msg, sr_lock, autonomo_msg
-    global autonomo_lock, autonomo_event, main_event, main_lock, main_msg
+    global autonomo_lock, autonomo_event, main_event, main_lock, main_msg, sacomrx
 
     sa_event = Event()
     sa_lock = Lock()
@@ -13,6 +13,7 @@ def init():
     sw_msg = {}
 
     sr_lock = Lock()
+    sacomrx = Lock()
 
 
     autonomo_event = Event()

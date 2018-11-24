@@ -6,6 +6,7 @@ from copy import deepcopy
 import compartilhados
 from distributor import *
 from com import *
+import time
 
 
 class Switch(Thread):
@@ -17,14 +18,19 @@ class Switch(Thread):
 
         self.distributor = dist
 
-        self.srCOM = Com(65000)
-        self.srCOM.rx()
-
-        self.tx = SAcomTX('localhost')
+        self.tx = SAcomTX('192.168.0.101')
         self.tx.start()
 
-        self.rx = SAcomRX('localhost')
+        self.rx = SAcomRX('192.168.0.101', self.distributor.getNome())
         self.rx.start()
+
+        self.srCOM = Com(65000)
+        mac = self.srCOM.descoberta()
+        self.distributor.setMac(mac)
+        self.srCOM.rx()
+
+
+
 
 
     def _envia_msg_sa(self, msg):
@@ -49,7 +55,7 @@ class Switch(Thread):
             compartilhados.main_event.set()
 
     def run(self):
-
+        lista = 'lista|12/22/23'
         while True:
             compartilhados.sw_event.wait()
 
@@ -60,15 +66,14 @@ class Switch(Thread):
                 if msg['_dir'] == 'sa':
                     # Mensagens Vinda do SA
                     if 'cmd' not in msg:
-                        switch_event.clear()
+                        compartilhados.sw_event.clear()
                         continue
 
                     cmd = msg['cmd']
-                    robo = self.distributor.getNome()
-                    x, y = self.distributor.getCoord()
                     if cmd == SA_to_SS.ValidacaoCaca:
                         if msg['ack'] == 1:
                             self.distributor.setValidacao(True)
+
                         else:
                             self.distributor.setValidacao(False)
 
@@ -91,42 +96,84 @@ class Switch(Thread):
                         pass
 
                     elif cmd == SA_to_SS.NovoJogo:
-                        pass
+                        if msg['modo_jogo'] == 'autonomo':
+                            self._avisa_main({'modo': 'auto'})
+
+                            coord = msg['x'] + msg['y']
+                            self.srCOM.enviar(self.srCOM.getRobo(), coord)
+                            self.srCOM.enviar(self.srCOM.getRobo(), 'auto')
+
+                            ## TRATAR AS CAÇAS
+                            self.srCOM.enviar(self.srCOM.getRobo(), msg['cacas'])
+
+
+                        elif msg['modo_jogo'] == 'manual':
+                            coord = msg['x'] + msg['y']
+                            self.srCOM.enviar(self.srCOM.getRobo(), coord)
+                            self.srCOM.enviar(self.srCOM.getRobo(), 'manual')
 
 
                 elif 'cmd' in msg and msg['cmd'] != 'auto' :
-                    print("switch msg SR")
                     # Mensagens vindas do robo
                     msg = msg['cmd'].split("|")
                     cmd = msg[0]
                     robo = self.distributor.getNome()
-                    print(msg)
-                    x = int(msg[1][0])
-                    y = int(msg[1][1])
+
+
                     if cmd == "destino":
+                        x = int(msg[1][0])
+                        y = int(msg[1][1])
                         msg = {'_dir':'sa', '_robo': robo, 'cmd': SS_to_SA.MovendoPara, 'x': x, 'y': y}
                         self.distributor.setCoord(x, y)
                         self._avisa_autonomo({'cmd':SS_to_SS.MovendoPara})
                         self._envia_msg_sa(msg)
 
 
+
                     elif cmd == "validar":
+                        x = int(msg[1][0])
+                        y = int(msg[1][1])
                         msg = {'robo': robo, 'cmd': SS_to_SA.ValidaCaca, 'x': x, 'y': y}
 
-                        self._avisa_autonomo(msg)
+                        self._avisa_autonomo({'cmd':SS_to_SS.ValidaCaca})
                         self._envia_msg_sa(msg)
 
+                        #print('SA VALIDANDO CAÇA')
+                        #time.sleep(2)
+                        #print('Caça validada')
+                        #self.srCOM.enviar(self.srCOM.getRobo(), 'validada'+'|'+'22/23')
+
                     elif cmd == "posAtual":
+                        x = int(msg[1][0])
+                        y = int(msg[1][1])
                         msg = {'robo': robo, 'cmd': SS_to_SA.PosicaoAtual, 'x': x, 'y': y}
                         self._envia_msg_sa(msg)
                         self._avisa_autonomo(msg)
+                        self.srCOM.enviar(self.srCOM.getRobo(), lista)
+
+                    elif cmd == "mac":
+                        print("Recebendo MAC:", msg[1])
+                        self.distributor.setMac(msg[1])
+
+                    elif cmd == "uri":
+                        msg = {'modo':'manual', 'uri': msg[1]}
+                        self._avisa_main(msg)
+
+                    elif cmd == "manual":
+                        self.srCOM.enviar(self.srCOM.getRobo(), '00')
+                        self.srCOM.enviar(self.srCOM.getRobo(), 'manual')
 
                     else:
                         return
 
                 else:
-                    msg = {'modo':'autonomo'}
+
+                    msg = {'modo': 'auto'}
+
                     self._avisa_main(msg)
+                    self.srCOM.enviar(self.srCOM.getRobo(), '00')
+                    self.srCOM.enviar(self.srCOM.getRobo(), msg['modo'])
+                    self.srCOM.enviar(self.srCOM.getRobo(), lista)
 
 
 
