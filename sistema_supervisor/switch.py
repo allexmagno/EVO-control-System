@@ -1,44 +1,64 @@
-from threading import Thread, Lock, Event
+from threading import Thread
 from mensagens import *
 from sacomTX import *
 from sacomRX import *
 from copy import deepcopy
 import compartilhados
 from distributor import *
+from com import *
 
 
 class Switch(Thread):
-    def __init__(self, hostSA, dist):
-        super(Switch, self).__init__()
+    compartilhados.init()
 
-        compartilhados.init()
+    def __init__(self, dist):
+        Thread.__init__(self)
+
+
         self.distributor = dist
 
-        self.tx = SAcomTX(hostSA)
+        self.srCOM = Com(65000)
+        self.srCOM.rx()
+
+        self.tx = SAcomTX('localhost')
         self.tx.start()
 
-        self.rx = SAcomRX(hostSA)
+        self.rx = SAcomRX('localhost')
         self.rx.start()
 
+
     def _envia_msg_sa(self, msg):
-        with compartilhados.sa_lock:
+         with compartilhados.sa_lock:
             compartilhados.sa_msg = msg
             compartilhados.sa_event.set()
 
     def _envia_msg_sr(self, msg):
-        with compartilhados.sr_lock:
-            compartilhados.sr_msg = msg
+        with compartilhados.lock:
+            compartilhados.msg = msg
             compartilhados.sr_event.set()
 
-    def switch(self):
-        def switch_rede():
-            while True:
+    def _avisa_autonomo(self, msg):
+        with compartilhados.autonomo_lock:
+            compartilhados.autonomo_msg = msg
+            compartilhados.autonomo_event.set()
+        print("msg do avisa:")
 
-                compartilhados.switch_event.wait()
+    def _avisa_main(self, msg):
+        with compartilhados.main_lock:
+            compartilhados.main_msg = msg
+            compartilhados.main_event.set()
 
-                with compartilhados.switch_lock:
-                    msg = deepcopy(compartilhados.switch_msg)
+    def run(self):
 
+        while True:
+            compartilhados.sw_event.wait()
+
+            with compartilhados.sw_lock:
+                msg = deepcopy(compartilhados.sw_msg)
+                print(msg)
+
+                if msg['_dir'] == 'sa':
+                    # Mensagens Vinda do SA
                     if 'cmd' not in msg:
                         switch_event.clear()
                         continue
@@ -46,73 +66,68 @@ class Switch(Thread):
                     cmd = msg['cmd']
                     robo = self.distributor.getNome()
                     x, y = self.distributor.getCoord()
-                    if '_dir' in msg and msg['_dir'] == 'sr' and cmd == -1:
-                        break
-
-                    # Mensagens vindas do SR
-                    if '_dir' in msg and msg['_dir'] == 'sr':
-                        print ("Recebendo mensagem do SR")
-
-                        if cmd == SR_to_SS.MovendoPara:
-                            msg = {'robo':robo, 'cmd':SS_to_SA.MovendoPara, 'x':x, 'y':y}
-                            self._envia_msg_ss(msg)
-
-                        elif cmd == SR_to_SS.PosicaoAtual:
-                            msg = {'robo': robo, 'cmd': SS_to_SA.PosicaoAtual, 'x': x, 'y': y}
-                            self._envia_msg_ss(msg)
-
-                        elif cmd == SR_to_SS.ValidaCaca:
-                            msg = {'robo': robo, 'cmd': SS_to_SA.ValidaCaca, 'x': x, 'y': y}
-                            self._envia_msg_ss(msg)
-
-                        elif cmd == SR_to_SS.ObstaculoEncontrado:
-                            msg = {'robo': robo, 'cmd': SS_to_SA.ObstaculoEncontrado, 'x': x, 'y': y}
-                            self._envia_msg_ss(msg)
-
+                    if cmd == SA_to_SS.ValidacaoCaca:
+                        if msg['ack'] == 1:
+                            self.distributor.setValidacao(True)
                         else:
-                            pass
+                            self.distributor.setValidacao(False)
 
-                    # Mensagens vindas do SR
-                    elif '_dir' in msg and msg['_dir'] == 'sa':
-                        print("Recebendo mensagem do SA")
+                        msg = {'cmd': SS_to_SR.ValidaCaca}
+                        self._envia_msg_sr(msg)
 
-                        if cmd == SA_to_SS.ValidacaoCaca:
+                    elif cmd == SA_to_SS.AtualizaMapa:
+                        pass
 
-                            if msg['ack'] == 1:
-                                self.distributor.setValidacao(True)
-                            else:
-                                self.distributor.setValidacao(False)
+                    elif cmd == SA_to_SS.CadastraRobo:
+                        pass
 
-                            msg = {'cmd': SS_to_SR.ValidaCaca}
-                            self._envia_msg_sr(msg)
+                    elif cmd == SA_to_SS.Continua:
+                        pass
 
-                        elif cmg == SA_to_SS.AtualizaMapa:
-                            pass
+                    elif cmd == SA_to_SS.Pausa:
+                        pass
 
-                        elif cmg == SA_to_SS.CadastraRobo:
-                            pass
+                    elif cmd == SA_to_SS.FimJogo:
+                        pass
 
-                        elif cmg == SA_to_SS.Continua:
-                            pass
-
-                        elif cmg == SA_to_SS.Pausa:
-                            pass
-
-                        elif cmg == SA_to_SS.FimJogo:
-                            pass
-
-                        elif cmg == SA_to_SS.NovoJogo:
-                            pass
-
-                        compartilhados.switch_event.clear()
+                    elif cmd == SA_to_SS.NovoJogo:
+                        pass
 
 
-        thread = Thread(target=switch_rede)
-        thread.start()
-        return
+                elif 'cmd' in msg and msg['cmd'] != 'auto' :
+                    print("switch msg SR")
+                    # Mensagens vindas do robo
+                    msg = msg['cmd'].split("|")
+                    cmd = msg[0]
+                    robo = self.distributor.getNome()
+                    print(msg)
+                    x = int(msg[1][0])
+                    y = int(msg[1][1])
+                    if cmd == "destino":
+                        msg = {'_dir':'sa', '_robo': robo, 'cmd': SS_to_SA.MovendoPara, 'x': x, 'y': y}
+                        self.distributor.setCoord(x, y)
+                        self._avisa_autonomo({'cmd':SS_to_SS.MovendoPara})
+                        self._envia_msg_sa(msg)
 
-if __name__ == '__main__':
-    print("Inicializando ...")
-    distributor = Distributor("equipe1", 0, 0)
-    switch = Switch('localhost',distributor)
-    switch.switch()
+
+                    elif cmd == "validar":
+                        msg = {'robo': robo, 'cmd': SS_to_SA.ValidaCaca, 'x': x, 'y': y}
+
+                        self._avisa_autonomo(msg)
+                        self._envia_msg_sa(msg)
+
+                    elif cmd == "posAtual":
+                        msg = {'robo': robo, 'cmd': SS_to_SA.PosicaoAtual, 'x': x, 'y': y}
+                        self._envia_msg_sa(msg)
+                        self._avisa_autonomo(msg)
+
+                    else:
+                        return
+
+                else:
+                    msg = {'modo':'autonomo'}
+                    self._avisa_main(msg)
+
+
+
+                compartilhados.sw_event.clear()

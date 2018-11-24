@@ -14,17 +14,12 @@ import subprocess
 porta = 62255
 comSS = Com(porta)
 
-comSS.broadcast("SRequipe1", 65000)
+#Divulga IP do robo por broadcast#
+comSS.broadcast(comSS.getMac(), 65000)
 msg = comSS.receber()
 
+hostSS = msg[1]
 
-coord = comSS.receber()
-hostSS = coord[1]
-
-ipRobo = subprocess.getoutput("hostname -I | cut -f1 -d \" \" ")
-
-#Divulga IP do robo por broadcast#
-#Caso perca a conexão com o SS voltar a mandar broadcast
 
 resposta = comSS.receber()
 #print(resposta)

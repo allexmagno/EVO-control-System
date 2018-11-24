@@ -1,19 +1,24 @@
-from threading import Lock, Event
-
+from threading import Lock, Event, Semaphore
 
 def init():
-    global enviar_sa_event, sa_lock, sa_msg, switch_event, switch_lock, switch_msg, sr_event, sr_lock, sr_msg
+    global sa_lock, sa_event, sa_msg, sw_event, sw_lock, sw_msg, sr_lock, autonomo_msg
+    global autonomo_lock, autonomo_event, main_event, main_lock, main_msg
 
-    enviar_sa_event = Event()
+    sa_event = Event()
     sa_lock = Lock()
     sa_msg = {}
 
-    switch_event = Event()
-    switch_lock = Lock()
-    switch_msg = {}
+    sw_event = Event()
+    sw_lock = Lock()
+    sw_msg = {}
 
-    sr_event = Event()
     sr_lock = Lock()
-    sr_msg = {}
 
 
+    autonomo_event = Event()
+    autonomo_lock = Lock()
+    autonomo_msg = {}
+
+    main_event = Event()
+    main_lock = Lock()
+    main_msg = {}

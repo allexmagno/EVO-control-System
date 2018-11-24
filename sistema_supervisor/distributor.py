@@ -2,22 +2,24 @@ from threading import Thread, Event, Lock
 
 
 
-class Distributor(Thread):
+class Distributor():
 
 
-    def __init__(self, robo, x, y):
-        super(Distributor, self).__init__()
-
+    def __init__(self, robo):
         self._robo = robo
-        self.x = x
-        self.y = y
+        self.mac = ''
 
         self.validar = False
 
         self.obstaculo = False
 
+        self.mensagem = ''
+
+        self.x = 0
+        self.y = 0
+
     def getNome(self):
-        return self.robo
+        return self._robo
 
     def getCoord(self):
         return self.x, self.y
@@ -30,6 +32,18 @@ class Distributor(Thread):
 
     def getObstaculo(self):
         return self.obstaculo
+
+    def setMensagem(self, msg):
+        self.mensagem = msg
+
+    def getMensegem(self):
+        return self.mensagem
+
+    def setMac(self, mac):
+        self.mac = mac
+
+    def getMac(self):
+        return self.mac
 
     def setValidacao(self, validacao):
         self.validar = validacao

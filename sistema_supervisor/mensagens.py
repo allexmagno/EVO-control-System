@@ -4,6 +4,14 @@ class SR_to_SS(object):
     ValidaCaca = 5002
     ObstaculoEncontrado = 5003
 
+class SS_to_SS(object):
+    MovendoPara = 6000
+    PosicaoAtual = 6001
+    ValidaCaca = 6002
+    ObstaculoEncontrado = 6003
+
+    ValidaCaca_resp = 6004
+
 class SS_to_SR(object):
     MovendoPara = 4000
     PosicaoAtual = 4001

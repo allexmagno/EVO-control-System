@@ -3,6 +3,7 @@ from srCom import *
 from threading import Thread
 import subprocess
 import socket
+import netifaces
 
 
 @Pyro4.expose
@@ -16,6 +17,9 @@ class Com(Thread):
         self.client.bind(('', self.porta))
         self.uri = ''
 
+        ##### LEMBRAR DE CONFERIR A INTERFACE
+        self.mac = netifaces.ifaddresses('wlp2s0')[netifaces.AF_LINK]
+
     def rpc(self, dados, robo):
         self.srcom = SRCom(dados, robo)
         self.deamon = Pyro4.Daemon(host=self.ip, port=64000)
@@ -27,6 +31,9 @@ class Com(Thread):
     def getURI(self):
         return self.uri
 
+    def getMac(self):
+        return self.mac
+
     def getIP(self):
         return self.ip
 
@@ -35,14 +42,6 @@ class Com(Thread):
 
     def receber(self):
         return self.client.recvfrom(1024)
-
-    def descoberta(self, ssID):
-        msg = self.receber()
-        while msg[0].decode() != ssID:
-            msg = self.receber()
-
-        self.enviar(msg[1], "SRequipe1")
-        return msg[1]
 
     def broadcast(self, msg, porta):
         self.client.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)

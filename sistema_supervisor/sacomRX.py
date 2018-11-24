@@ -9,12 +9,12 @@ import time
 class SAcomRX(Thread):
 
     def __init__(self, host):
-        super(SAcomRX, self).__init__()
+        Thread.__init__(self)
 
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=str(host)))
         self.channel = self.connection.channel()
         self.channel.queue_declare(queue='SA_to_SS')
-        self.channel.basic_consume(self.trata_msg_recebida, queue='SS_to_SA', no_ack=True)
+        self.channel.basic_consume(self.trata_msg_recebida, queue='SA_to_SS', no_ack=True)
 
     def trata_msg_recebida(self, ch, method, properties, body):
         try:
@@ -25,15 +25,20 @@ class SAcomRX(Thread):
         # Identificador (indica que a msg veio do SS)
         msg['_dir'] = 'sa'
 
-        with compartilhados.gerente_msg_lock:
+        print("sadTry")
+        with compartilhados.switch_lock:
+            print("sadLock")
             # Copia a mensagem para o buffer de transmissao
-            compartilhados.gerente_msg = deepcopy(msg)
-
+            compartilhados.switch_msg = deepcopy(msg)
+            print("sadcopy")
             # Chama o gerente
-            compartilhados.solicita_gerente.set()
-
+            compartilhados.switch_event.set()
+            print("sadset")
             # Tempo de seguranca para o gerente pegar a msg
             time.sleep(0.2)
+
+            compartilhados.switch_event.clear()
+            print("sad")
 
 
     def run(self):
