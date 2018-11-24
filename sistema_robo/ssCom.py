@@ -8,7 +8,7 @@ class SSCom:
         self.host = host
 
     def setPosAtual(self,posAtual):
-        self.com.enviar("posAtual|" + posAtual.toString(), self.host)
+        self.com.enviar("posAtual|" + str(posAtual.getX()) + str(posAtual.getY()), self.host)
 
     def getPosAtual(self):
         self.dados.coordenadas.toString()
@@ -16,8 +16,8 @@ class SSCom:
 
 
     def setDestino(self,destino):
-        self.com.enviar("destino|" + destino.toString(),self.host)
+        self.com.enviar("destino|" + str(destino.getX()) + str(destino.getY()),self.host)
 
     def setValidar(self, x, y):
         coordenada = str(x) + str(y)
-        self.com.enviar("validar|" + coordenada,self.host)
+        self.com.enviar("validar|" + str(x) + str(y),self.host)

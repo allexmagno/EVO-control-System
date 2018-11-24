@@ -23,11 +23,14 @@ class Autonomo(Thread):
                 msg = msg['cmd']
                 if msg == SS_to_SS.MovendoPara:
                     x, y = self.distributor.getCoord()
-                    print(x, y)
+                    print("Robo está se movimentando para: " + x + y)
 
                 elif msg == SS_to_SS.ValidaCaca:
-                    x, y = self.distributor.getCoord()
-                    print("SOLICITA VALIDAR CAÇA NA POSIÇÂO: ", x, y)
+                    print("Robo solicita validaçao de caça: " + msg['x'] + msg['y'])
+                elif msg == SS_to_SA.PosicaoAtual:
+                    print("posicao atual do robo é " + msg['x'] + msg['y'])
+                else:
+                    pass
 
                 # Continuar todas as opções
                 compartilhados.autonomo_event.clear()

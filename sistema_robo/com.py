@@ -18,7 +18,7 @@ class Com(Thread):
         self.uri = ''
 
         ##### LEMBRAR DE CONFERIR A INTERFACE
-        self.mac = netifaces.ifaddresses('wlp2s0')[netifaces.AF_LINK]
+        self.mac = netifaces.ifaddresses('wlan1')[netifaces.AF_LINK]
 
     def rpc(self, dados, robo):
         self.srcom = SRCom(dados, robo)

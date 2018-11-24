@@ -14,12 +14,18 @@ import subprocess
 porta = 62255
 comSS = Com(porta)
 
-#Divulga IP do robo por broadcast#
-comSS.broadcast(comSS.getMac(), 65000)
+print(comSS.getMac()[0]['addr'])
+
+comSS.broadcast("mac|" + comSS.getMac()[0]['addr'], 65000)
 msg = comSS.receber()
+print(msg[0].decode())
 
-hostSS = msg[1]
+coord = comSS.receber()
+hostSS = coord[1]
+print(coord[0].decode())
 
+#Divulga IP do robo por broadcast#
+#Caso perca a conexão com o SS voltar a mandar broadcast
 
 resposta = comSS.receber()
 #print(resposta)
@@ -27,29 +33,22 @@ resposta = resposta[0].decode().split(",")
 
 if(resposta[0] == "getid"):
     ##Enviar MAC do robo
-    comSS.enviar("15",hostSS)
+    comSS.enviar(comSS.getMac()[0]['addr'],hostSS)
 
 elif(resposta[0] == "auto"):
     print("auto")
-    comSS.enviar("ready",hostSS)
+    #comSS.enviar("ready",hostSS)
     resp = comSS.receber()
-
     print(resp[0].decode())
 
     split = resp[0].decode().split('|')
-    print(split)
 
     i = 0
-
-    cordInicial = []
+    cordInicial = coord[0].decode()
     listCord = []
 
     while(i < len(split)):
-        if(split[i] == "cord"):
-            i += 1
-            cordInicial.append(split[i][0])
-            cordInicial.append(split[i][1])
-        elif(split[i] == "lista"):
+        if(split[i] == "lista"):
             i += 1
             cordenadas = split[i].split("/")
             print(cordenadas)
@@ -65,11 +64,11 @@ elif(resposta[0] == "auto"):
                     listCord.append(cordenadasLista)
                     j += 1
         i += 1
-
     print(cordInicial)
     print(listCord)
 
     coordenadaInicial = Coordenadas(cordInicial)
+
     ## Cord Inicial e Lista recebida
     #Chamar estrategia e comunicar com SS pela porta especifica
 
@@ -98,7 +97,7 @@ elif(resposta[0] == "auto"):
             dado.getListaDeCacas(listaDesserealizada)
             robo.atualizaLista(listaDesserealizada)
 
-            coordenadaAdv = msg[2]
+            #coordenadaAdv = msg[2]
 
             msgSS2 = comSS.receber()
             msg2 = msgSS[0].decode().split("|")
@@ -110,7 +109,7 @@ elif(resposta[0] == "auto"):
                 dado.getListaDeCacas(listaDesserealizada)
                 robo.atualizaLista(listaDesserealizada)
 
-                coordenadaAdv = msg2[2]
+                #coordenadaAdv = msg2[2]
         elif msg[0] == "mapa":
                 listaAtual = msg[1]
 
@@ -119,33 +118,29 @@ elif(resposta[0] == "auto"):
                 dado.getListaDeCacas(listaDesserealizada)
                 robo.atualizaLista(listaDesserealizada)
 
-                coordenadaAdv = msg[2]
+                #coordenadaAdv = msg[2]
         elif msg[0] == "validada":
-            listaAtual = msg2[1]
+            listaAtual = msg[1]
 
             # Desserializar lista
             listaDesserealizada = serial.desserializa(listaAtual)
             dado.getListaDeCacas(listaDesserealizada)
             robo.atualizaLista(listaDesserealizada)
 
-            coordenadaAdv = msg2[2]
+            #coordenadaAdv = msg2[2]
         elif msg[0] == "naoValidada":
-            listaAtual = msg2[1]
+            listaAtual = msg[1]
 
             # Desserializar lista
             listaDesserealizada = serial.desserializa(listaAtual)
             dado.getListaDeCacas(listaDesserealizada)
             robo.atualizaLista(listaDesserealizada)
 
-            coordenadaAdv = msg2[2]
+            #coordenadaAdv = msg2[2]
         elif msg[0] == "paradaEmergencia":
             break
         msgSS = ("","")
 
-    '''
-    aut = Autonomo(robo,dado)
-    aut.inicia()
-    '''
 elif(resposta[0] == "manual"):
 
 
@@ -157,7 +152,7 @@ elif(resposta[0] == "manual"):
     comSS.rpc(dados,robo)
     uri = comSS.getURI()
 
-    comSS.enviar(str(uri),hostSS)
+    comSS.enviar("uri|" + str(uri),hostSS)
     comSS.start()
 
     sscom = SSCom(comSS, hostSS, dados)
