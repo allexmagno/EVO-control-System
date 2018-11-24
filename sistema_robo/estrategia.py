@@ -7,10 +7,10 @@ class Estrategia:
         self.lista = lista
 
     def getEstrategia(self, coordenadas):
-        self.ordenaSequenciaCaca(self.lista,coordenadas)
+        self.ordenaSequenciaCaca(coordenadas)
         return self.lista[0]
 
-    def ordenaSequenciaCaca(self,lista, coordenadas):
+    def ordenaSequenciaCaca(self,coordenadas):
         i = 0
         j = 0
 
@@ -23,10 +23,10 @@ class Estrategia:
         while i < (len(listaDeCacas)):
 
             if auxDistancia > sqrt(((int(self.lista[i].getX()) - x_atual) ** 2) + ((int(self.lista[i].getY()) - y_atual) ** 2)):
-
                 auxDistancia = sqrt(((int(self.lista[i].getX()) - x_atual) ** 2) + ((int(self.lista[i].getY()) - y_atual) ** 2))
                 j = i
             i = i + 1
+
 
         self.lista = listaDeCacas
 
