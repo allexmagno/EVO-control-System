@@ -5,12 +5,16 @@ from robo import *
 from broadcast import *
 from coordenadas import *
 from ssCom import *
+import globalsFlags
+
 import time
 import time
 import socket
 import threading
 import subprocess
 
+
+globalsFlags.init()
 porta = 62255
 comSS = Com(porta)
 
@@ -72,11 +76,11 @@ elif(resposta[0] == "auto"):
     ## Cord Inicial e Lista recebida
     #Chamar estrategia e comunicar com SS pela porta especifica
 
-    dado = Dados(cordInicial,listCord)
+    dado = Dados(cordInicial, listCord)
     print(hostSS)
-    robo = Robo(dado)
-
     ssCom = SSCom(comSS, hostSS, dado)
+
+    robo = Robo(dado, ssCom)
     ##Thread ssCOM para enviar mensagem
     #
     #
@@ -86,7 +90,7 @@ elif(resposta[0] == "auto"):
 
     msgSS = ("","")
     while msgSS == ("",""):
-        robo.setAutonomo(ssCom)
+        robo.setAutonomo()
         msgSS = comSS.receber()
         msg = msgSS[0].decode().split("|")
         if(msg[0] == "confirmaMov"):

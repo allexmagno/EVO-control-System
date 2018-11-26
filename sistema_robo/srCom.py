@@ -28,3 +28,6 @@ class SRCom:
     def setTime(self):
         # Trocar a cor do LED robo
         pass
+
+    def setValidar(self):
+        self.robo.validarCaca()

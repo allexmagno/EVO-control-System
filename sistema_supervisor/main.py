@@ -7,17 +7,23 @@ import compartilhados
 from sacomTX import *
 from sacomRX import *
 from copy import deepcopy
+import manualComp
+from mensagens import *
 import threading
 
+def manualComunicacao():
+    while True:
+        manualComp.main_event.wait()
+
+        with manualComp.main_lock:
+            v = deepcopy(manualComp.main_msg)
+            compartilhados.sw_msg = deepcopy({'_dir': 'ss', 'cmd': SS_to_SS.ValidaCaca,
+                                              'x': v['x'], 'y': v['y']})
+            compartilhados.sw_event.set()
+
+        manualComp.main_event.clear()
 
 
-
-## Iniciar a comunicação com o Robo
-#clienteSS = Com(65000)
-#srHost = clienteSS.descoberta()
-#host = srHost[1]
-
-## Iniciar Classe compartilhada
 robo = input("informe o nome do robo: ")
 distributor = Distributor(robo)
 
@@ -25,10 +31,6 @@ distributor = Distributor(robo)
 switch = Switch(distributor)
 switch.start()
 
-## Iniciar a  comunicação vinda do SA
-#hostSA = input("Informe o IP do SA: ")
-#tx = SAcomTX('localhost')
-#tx.start()
 
 while True:
 
@@ -46,8 +48,12 @@ while True:
 
         elif msg['modo'] == 'manual':
             print("MODO MANUAL\n")
+
+            manualComp.init()
             manual = Manual(msg['uri'])
             manual.start()
+            a = threading.Thread(target=manualComunicacao)
+            a.start()
 
         else:
             print("Modo invalido")
@@ -69,8 +75,15 @@ while True:
             elif decisao == 2:
                 exit(-1)
 
-            else:
-                print("comando inválido")
+        elif msg['cmd'] == SS_to_SS.ValidaCaca_resp:
+
+            with manualComp.lock_man:
+                manualComp.msg_man = {'caca': msg['caca']}
+                manualComp.event_man.set()
+
+        else:
+            print("comando inválido")
+
 
     compartilhados.main_event.clear()
 

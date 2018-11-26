@@ -6,7 +6,7 @@ class Dados:
 
     def __init__(self, coordenadas, lista):
         self.coordenadas = Coordenadas(coordenadas)
-
+        self.cacaEncontradas = []
         self.estrategia = Estrategia(lista)
 
     def getCoordenadas(self):

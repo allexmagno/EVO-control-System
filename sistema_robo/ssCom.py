@@ -1,6 +1,8 @@
 import threading
 from coordenadas import *
 
+
+
 class SSCom:
     def __init__(self, com, host, dados):
         self.com = com
@@ -19,5 +21,4 @@ class SSCom:
         self.com.enviar("destino|" + str(destino.getX()) + str(destino.getY()),self.host)
 
     def setValidar(self, x, y):
-        coordenada = str(x) + str(y)
         self.com.enviar("validar|" + str(x) + str(y),self.host)

@@ -11,9 +11,9 @@ class SAcomRX(Thread):
     def __init__(self, host, robo):
         Thread.__init__(self)
         self.robo = robo
-        credentials = pika.PlainCredentials('robot1', 'robot1')
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host, 5672, '/', credentials))
-        #self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=str(host)))
+        #credentials = pika.PlainCredentials('robot1', 'robot1')
+        #self.connection = pika.BlockingConnection(pika.ConnectionParameters(host, 5672, '/', credentials))
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=str(host)))
         self.channel = self.connection.channel()
         self.channel.exchange_declare(exchange='SA_to_SS',
                                       exchange_type='fanout')
@@ -55,7 +55,7 @@ class SAcomRX(Thread):
                     # Tempo de seguranca para o gerente pegar a msg
                     time.sleep(0.2)
 
-            elif msg['robo'] == self.jogador:
+            else:
 
                 with compartilhados.sacomrx:
                     compartilhados.sw_msg = deepcopy(msg)

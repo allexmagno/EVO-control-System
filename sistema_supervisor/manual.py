@@ -1,5 +1,8 @@
 from threading import Thread
 from srCom import *
+import manualComp
+from copy import deepcopy
+from mensagens import *
 
 
 class Manual(Thread):
@@ -14,7 +17,7 @@ class Manual(Thread):
                          "(s) Retornar\n"
                          "(d) Direirta\n"
                          "(a) Esquerda\n"
-                         "(espaço) Caça\n"
+                         "(v) Validar Caça\n"
                          "(c) Coordenadas\n")
 
             if a == 'w':
@@ -28,3 +31,26 @@ class Manual(Thread):
 
             elif a == 'd':
                 self.rpc.setMover('direita')
+
+            elif a == 'v':
+
+
+                self.rpc.setValidar()
+
+                x = int(input("x atual: "))
+                y = int(input("y atual: "))
+
+                with manualComp.main_lock:
+                    manualComp.main_msg = {'x': x, 'y': y}
+                    manualComp.main_event.set()
+
+                manualComp.event_man.wait()
+                msg = deepcopy(manualComp.msg_man)
+
+                if msg['caca'] == 1:
+                    print("CAÇA VALIDADA PELO SA")
+
+                elif msg['caca'] == 0:
+                    print("CAÇA NÃO VALIDADA PELO SA")
+
+                manualComp.event_man.clear()

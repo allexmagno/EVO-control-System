@@ -6,6 +6,7 @@ import socket
 import netifaces
 
 
+
 @Pyro4.expose
 class Com(Thread):
     def __init__(self, porta):

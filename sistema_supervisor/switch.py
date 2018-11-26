@@ -18,20 +18,16 @@ class Switch(Thread):
 
         self.distributor = dist
 
-        self.tx = SAcomTX('192.168.0.101')
-        self.tx.start()
-
-        self.rx = SAcomRX('192.168.0.101', self.distributor.getNome())
-        self.rx.start()
-
         self.srCOM = Com(65000)
         mac = self.srCOM.descoberta()
         self.distributor.setMac(mac)
         self.srCOM.rx()
 
+        self.tx = SAcomTX('localhost')
+        self.tx.start()
 
-
-
+        self.rx = SAcomRX('localhost', self.distributor.getNome())
+        self.rx.start()
 
     def _envia_msg_sa(self, msg):
          with compartilhados.sa_lock:
@@ -39,9 +35,10 @@ class Switch(Thread):
             compartilhados.sa_event.set()
 
     def _envia_msg_sr(self, msg):
-        with compartilhados.lock:
-            compartilhados.msg = msg
-            compartilhados.sr_event.set()
+        #with compartilhados.lock:
+        #    compartilhados.msg = msg
+        #    compartilhados.sr_event.set()
+        self.srCOM.enviar(self.srCOM.getRobo(), msg)
 
     def _avisa_autonomo(self, msg):
         with compartilhados.autonomo_lock:
@@ -55,7 +52,7 @@ class Switch(Thread):
             compartilhados.main_event.set()
 
     def run(self):
-        lista = 'lista|12/22/23'
+        #lista = 'lista|12/22/23'
         while True:
             compartilhados.sw_event.wait()
 
@@ -73,12 +70,16 @@ class Switch(Thread):
                     if cmd == SA_to_SS.ValidacaoCaca:
                         if msg['ack'] == 1:
                             self.distributor.setValidacao(True)
+                            msg = {'cmd': SS_to_SS.ValidaCaca_resp, 'caca': 1}
+                            self._avisa_main(msg)
 
                         else:
                             self.distributor.setValidacao(False)
+                            msg = {'cmd': SS_to_SS.ValidaCaca_resp, 'caca': 0}
+                            self._avisa_main(msg)
 
-                        msg = {'cmd': SS_to_SR.ValidaCaca}
-                        self._envia_msg_sr(msg)
+                        #msg = {'cmd': SS_to_SR.ValidaCaca}
+                        #self._envia_msg_sr(msg)
 
                     elif cmd == SA_to_SS.AtualizaMapa:
                         pass
@@ -113,7 +114,21 @@ class Switch(Thread):
                             self.srCOM.enviar(self.srCOM.getRobo(), 'manual')
 
 
-                elif 'cmd' in msg and msg['cmd'] != 'auto' :
+                elif msg['_dir'] == 'ss':
+                    # Mensagens Vinda do Ss
+                    if 'cmd' not in msg:
+                        compartilhados.sw_event.clear()
+                        continue
+
+                    elif msg['cmd'] == SS_to_SS.ValidaCaca:
+                        msg = {'_dir': 'ss', '_robo': self.distributor.getNome(),
+                               'cmd': SS_to_SA.ValidaCaca, 'x': msg['x'], 'y': msg['y']}
+                        self._envia_msg_sa(msg)
+
+
+
+
+                elif msg['_dir'] == 'sr':
                     # Mensagens vindas do robo
                     msg = msg['cmd'].split("|")
                     cmd = msg[0]

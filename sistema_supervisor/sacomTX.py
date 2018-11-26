@@ -10,9 +10,9 @@ class SAcomTX(Thread):
     def __init__(self, host):
         Thread.__init__(self)
 
-        credentials = pika.PlainCredentials('robot1', 'robot1')
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host, 5672, '/', credentials))
-        #self.connection = pika.BlockingConnection(pika.ConnectionParameters(host))
+        #credentials = pika.PlainCredentials('robot1', 'robot1')
+        #self.connection = pika.BlockingConnection(pika.ConnectionParameters(host, 5672, '/', credentials))
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host))
         self.channel = self.connection.channel()
         self.channel.queue_declare(queue='SS_to_SA')
 

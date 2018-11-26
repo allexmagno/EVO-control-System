@@ -21,4 +21,4 @@ class SRCom:
         pass
 
     def setValidar(self):
-        pass
+        self.comando.setValidar()
