@@ -11,6 +11,7 @@ class Robo:
         self.mover = Movimento('outA', 'outD', 200)
         self.ssCOM = sscom
 
+
     def setManual(self,  comando):
         if comando == "direita":
             self.mover.setDireita()
@@ -95,6 +96,15 @@ class Robo:
             self.validarCaca()
             i = 1
 
+            #caca = ssCOM.setValidar(coordProxima.getX(),coordProxima.getY())
+            #if caca == True:
+            #    self.dados.setEncontrada((coordProxima.getX(),coordProxima.getY()))
+            #    self.dados.setListaDeCacas(ssCOM.getLista())
+            #else:
+            #    self.dados.setListaDeCacas(ssCOM.getLista())
+            #    print("Caça invalida")
+
+
             ## Nesse ponto o robo deve aguardar a resposta vinda do SA
             # SUGESTAO
             # criar um metodo que execute uma thread em com para receber as mensagens durante a execução do jogo
@@ -104,12 +114,13 @@ class Robo:
             # Talvez possa usar um threading.Event.wait()
 
         # Passar a posiçao atual independente de ser uma caça ou nao
+        #
         if i == 0:
             self.ssCOM.setPosAtual(atual)
-        i = 0
+            i = 0
 
         #Confirmar se A posição está correta
-    def atualizaLista(self,lista):
+    def atualizaLista(self, lista):
         self.dados.getListaDeCacas(lista)
 
     def validarCaca(self):
@@ -118,11 +129,6 @@ class Robo:
         y = self.dados.getCoordenadas().getY()
 
         self.ssCOM.setValidar(x, y)
-        globalsFlags.com_event.set()
-
+        #globalsFlags.com_event.set()
         globalsFlags.robo_event.wait()
-
-
-
-
-        pass
+        globalsFlags.robo_event.clear()
