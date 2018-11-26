@@ -87,7 +87,13 @@ class Robo:
         else:
             atual = Coordenadas((self.dados.getCoordenadas().getX(), self.dados.getCoordenadas().getY()))
             #Caso seja a posição de uma caça enviar um solicitação de validação
-            ssCOM.setValidar(coordProxima.getX(),coordProxima.getY())
+            caca = ssCOM.setValidar(coordProxima.getX(),coordProxima.getY())
+            if caca == True:
+                self.dados.setEncontrada((coordProxima.getX(),coordProxima.getY()))
+                self.dados.setListaDeCacas(ssCOM.getLista())
+            else:
+                self.dados.setListaDeCacas(ssCOM.getLista())
+                print("Caça invalida")
             i = 1
 
         # Passar a posiçao atual independente de ser uma caça ou nao
