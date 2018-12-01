@@ -11,9 +11,10 @@ import manualComp
 from mensagens import *
 import threading
 
+'''
 def manualComunicacao():
     while True:
-        manualComp.main_event.wait()
+        .main_event.wait()
 
         with manualComp.main_lock:
             v = deepcopy(manualComp.main_msg)
@@ -22,7 +23,7 @@ def manualComunicacao():
             compartilhados.sw_event.set()
 
         manualComp.main_event.clear()
-
+'''
 
 robo = input("informe o nome do robo: ")
 distributor = Distributor(robo)
@@ -52,8 +53,8 @@ while True:
             manualComp.init()
             manual = Manual(msg['uri'])
             manual.start()
-            a = threading.Thread(target=manualComunicacao)
-            a.start()
+            #a = threading.Thread(target=manualComunicacao)
+            #a.start()
 
         else:
             print("Modo invalido")
@@ -76,10 +77,11 @@ while True:
                 exit(-1)
 
         elif msg['cmd'] == SS_to_SS.ValidaCaca_resp:
+            print("VALIDANDO no MAIN")
 
-            with manualComp.lock_man:
-                manualComp.msg_man = {'caca': msg['caca']}
-                manualComp.event_man.set()
+            #with compartilhados.lock_man:
+            #    compartilhados.msg_man = {'caca': msg['caca']}
+            #    compartilhados.event_man.set()
 
         else:
             print("comando inválido")

@@ -23,11 +23,15 @@ class Switch(Thread):
         self.distributor.setMac(mac)
         self.srCOM.rx()
 
-        self.tx = SAcomTX('localhost')
+        host = input("digite o IP do SA => ")
+
+        self.tx = SAcomTX(host)
         self.tx.start()
 
-        self.rx = SAcomRX('localhost', self.distributor.getNome())
+        self.rx = SAcomRX(host, self.distributor.getNome())
         self.rx.start()
+
+        self.modoJogo = ''
 
     def _envia_msg_sa(self, msg):
          with compartilhados.sa_lock:
@@ -35,9 +39,6 @@ class Switch(Thread):
             compartilhados.sa_event.set()
 
     def _envia_msg_sr(self, msg):
-        #with compartilhados.lock:
-        #    compartilhados.msg = msg
-        #    compartilhados.sr_event.set()
         self.srCOM.enviar(self.srCOM.getRobo(), msg)
 
     def _avisa_autonomo(self, msg):
@@ -51,9 +52,21 @@ class Switch(Thread):
             compartilhados.main_msg = msg
             compartilhados.main_event.set()
 
+
+    def tratarCaca(self, cacas):
+        lista = 'mapa|'
+
+        for i in range(len(cacas) - 1):
+            lista = lista + str(cacas[i]['x']) + str(cacas[i]['y']) + '/'
+        lista = lista + str(cacas[len(cacas)-1]['x']) + str(cacas[len(cacas)-1]['y'])
+
+        return lista
+
+
     def run(self):
         #lista = 'lista|12/22/23'
         while True:
+
             compartilhados.sw_event.wait()
 
             with compartilhados.sw_lock:
@@ -69,7 +82,12 @@ class Switch(Thread):
                     cmd = msg['cmd']
                     if cmd == SA_to_SS.ValidacaoCaca:
                         if msg['ack'] == 1:
+                            print("VALIDANDO CAÇA")
                             self.distributor.setValidacao(True)
+                            msg = 'validada|' + self.tratarCaca(msg['cacas'])
+                            print(msg)
+                            self._envia_msg_sr(msg)
+
                             msg = {'cmd': SS_to_SS.ValidaCaca_resp, 'caca': 1}
                             self._avisa_main(msg)
 
@@ -82,7 +100,12 @@ class Switch(Thread):
                         #self._envia_msg_sr(msg)
 
                     elif cmd == SA_to_SS.AtualizaMapa:
-                        pass
+                        print('Caças atualizadas:',msg['cacas'])
+                        x = str(msg['x'])
+                        y = str(msg['y'])
+                        msg = self.tratarCaca(msg['cacas'])
+                        msg = msg + "|adv|" + x + y
+                        self._envia_msg_sr(msg)
 
                     elif cmd == SA_to_SS.CadastraRobo:
                         pass
@@ -97,21 +120,23 @@ class Switch(Thread):
                         pass
 
                     elif cmd == SA_to_SS.NovoJogo:
-                        if msg['modo_jogo'] == 'autonomo':
+                        if msg['modo_jogo'] == 2:
                             self._avisa_main({'modo': 'auto'})
 
-                            coord = msg['x'] + msg['y']
+                            coord = str(msg['x']) + str(msg['y'])
                             self.srCOM.enviar(self.srCOM.getRobo(), coord)
                             self.srCOM.enviar(self.srCOM.getRobo(), 'auto')
+                            self.modoJogo = 'auto'
 
                             ## TRATAR AS CAÇAS
-                            self.srCOM.enviar(self.srCOM.getRobo(), msg['cacas'])
+                            self.srCOM.enviar(self.srCOM.getRobo(), self.tratarCaca(msg['cacas']))
 
 
-                        elif msg['modo_jogo'] == 'manual':
-                            coord = msg['x'] + msg['y']
+                        elif msg['modo_jogo'] == 1:
+                            coord = str(msg['x']) + str(msg['y'])
                             self.srCOM.enviar(self.srCOM.getRobo(), coord)
                             self.srCOM.enviar(self.srCOM.getRobo(), 'manual')
+                            self.modoJogo = 'manual'
 
 
                 elif msg['_dir'] == 'ss':
@@ -121,7 +146,7 @@ class Switch(Thread):
                         continue
 
                     elif msg['cmd'] == SS_to_SS.ValidaCaca:
-                        msg = {'_dir': 'ss', '_robo': self.distributor.getNome(),
+                        msg = {'_dir': 'ss', 'robo': self.distributor.getNome(),
                                'cmd': SS_to_SA.ValidaCaca, 'x': msg['x'], 'y': msg['y']}
                         self._envia_msg_sa(msg)
 
@@ -138,9 +163,11 @@ class Switch(Thread):
                     if cmd == "destino":
                         x = int(msg[1][0])
                         y = int(msg[1][1])
-                        msg = {'_dir':'sa', '_robo': robo, 'cmd': SS_to_SA.MovendoPara, 'x': x, 'y': y}
+                        msg = {'_dir':'sa', 'robo': robo, 'cmd': SS_to_SA.MovendoPara, 'x': x, 'y': y}
                         self.distributor.setCoord(x, y)
-                        self._avisa_autonomo({'cmd':SS_to_SS.MovendoPara})
+
+                        if self.modoJogo == 'auto':
+                            self._avisa_autonomo({'cmd':SS_to_SS.MovendoPara})
                         self._envia_msg_sa(msg)
 
 
@@ -164,7 +191,6 @@ class Switch(Thread):
                         msg = {'robo': robo, 'cmd': SS_to_SA.PosicaoAtual, 'x': x, 'y': y}
                         self._envia_msg_sa(msg)
                         self._avisa_autonomo(msg)
-                        self.srCOM.enviar(self.srCOM.getRobo(), lista)
 
                     elif cmd == "mac":
                         print("Recebendo MAC:", msg[1])

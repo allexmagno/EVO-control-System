@@ -1,6 +1,6 @@
 from threading import Thread
 from srCom import *
-import manualComp
+import compartilhados
 from copy import deepcopy
 from mensagens import *
 
@@ -33,24 +33,20 @@ class Manual(Thread):
                 self.rpc.setMover('direita')
 
             elif a == 'v':
-
-
                 self.rpc.setValidar()
 
-                x = int(input("x atual: "))
-                y = int(input("y atual: "))
+                #with manualComp.main_lock:
+                #    manualComp.main_msg = {'x': x, 'y': y}
+                #    manualComp.main_event.set()
 
-                with manualComp.main_lock:
-                    manualComp.main_msg = {'x': x, 'y': y}
-                    manualComp.main_event.set()
+                #compartilhados.event_man.wait()
+                #print("VALIDANDO MANUAL")
+                #msg = deepcopy(compartilhados.msg_man)
 
-                manualComp.event_man.wait()
-                msg = deepcopy(manualComp.msg_man)
+                #if msg['caca'] == 1:
+                #    print("CAÇA VALIDADA PELO SA")
 
-                if msg['caca'] == 1:
-                    print("CAÇA VALIDADA PELO SA")
+                #elif msg['caca'] == 0:
+                #    print("CAÇA NÃO VALIDADA PELO SA")
 
-                elif msg['caca'] == 0:
-                    print("CAÇA NÃO VALIDADA PELO SA")
-
-                manualComp.event_man.clear()
+                #   compartilhados.event_man.clear()

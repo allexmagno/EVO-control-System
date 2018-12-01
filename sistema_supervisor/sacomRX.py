@@ -16,13 +16,13 @@ class SAcomRX(Thread):
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=str(host)))
         self.channel = self.connection.channel()
         self.channel.exchange_declare(exchange='SA_to_SS',
-                                      exchange_type='fanout')
+                                      exchange_type='direct')
 
-        self.channel.queue_declare(queue=self.robo)
+        self.channel.queue_declare(queue='equipe1')
         self.channel.basic_consume(self.trata_msg_recebida,
-                                   queue=self.robo,
+                                   queue='equipe1',
                                    no_ack=True)
-        self.channel.queue_bind(exchange='SA_to_SS', queue=self.robo)
+        self.channel.queue_bind(exchange='SA_to_SS', queue='equipe1', routing_key=self.robo)
         self.jogador = ''
 
     def trata_msg_recebida(self, ch, method, properties, body):
@@ -64,6 +64,7 @@ class SAcomRX(Thread):
                     # Tempo de seguranca para o gerente pegar a msg
                     time.sleep(0.2)
 
+            print("FOOI")
             compartilhados.sw_event.clear()
 
     def run(self):
