@@ -16,7 +16,7 @@ import subprocess
 globalsFlags.init()
 porta = 62255
 comSS = Com(porta)
-
+serial = Serial()
 #Divulga IP do robo por broadcast#
 comSS.broadcast("mac|" + comSS.getMac()[0]['addr'], 65000)
 msg = comSS.receber()
@@ -25,33 +25,41 @@ print(msg[0].decode())
 ##Coordenada Inicial Robo
 coord = comSS.receber()
 hostSS = coord[1]
-
-def msgTrocada(dado,robo):
+print(coord[0].decode())
+def msgTrocada(dado,robo, modoJogo):
     while True:
         msgSS = comSS.receber()
+        print(msgSS)
         msg = msgSS[0].decode().split("|")
         if msg[0] == "mapa":
             listaAtual = msg[1]
-
+            print(listaAtual)
             # Desserializar lista
             listaDesserealizada = serial.desserializa(listaAtual)
             dado.setListaDeCacas(listaDesserealizada)
             robo.atualizaLista(listaDesserealizada)
+            print(modoJogo)
+            if modoJogo == 'auto':
+                globalsFlags.com_event.set()
 
 
-            # coordenadaAdv = msg[2]
-            robo.setAutonomo(ssCom)
         elif msg[0] == "validada":
-            listaAtual = msg[1]
+
+
+            print("VALIDANDO\nLista de cacas atualizada\n")
+            listaAtual = msg[2]
 
             # Desserializar lista
             listaDesserealizada = serial.desserializa(listaAtual)
-            dado.setListaDeCacas(listaDesserealizada)
-            robo.atualizaLista(listaDesserealizada)
-
-            # coordenadaAdv = msg2[2]
-            # robo.setAutonomo(ssCom)
+            lcacas = []
+            for i in range(len(listaDesserealizada)):
+                lcacas.append(listaDesserealizada[i].toString())
+            print(lcacas)
+            dado.setListaDeCacas(lcacas)
             globalsFlags.robo_event.set()
+            if modoJogo == 'auto':
+                globalsFlags.com_event.set()
+
         elif msg[0] == "naoValidada":
             listaAtual = msg[1]
 
@@ -76,9 +84,14 @@ def msgTrocada(dado,robo):
             print("Mensagem não Esperada")
         pass
 
-
+#### MODO DE JOGO
 resposta = comSS.receber()
 resposta = resposta[0].decode().split(",")
+
+
+
+
+
 
 if(resposta[0] == "getid"):
     ##Enviar MAC do robo
@@ -89,13 +102,13 @@ elif(resposta[0] == "auto"):
     print(resp[0].decode())
 
     split = resp[0].decode().split('|')
-
+    print(split)
     i = 0
     cordInicial = coord[0].decode()
     listCord = []
 
     while(i < len(split)):
-        if(split[i] == "lista"):
+        if(split[i] == "mapa"):
             i += 1
             cordenadas = split[i].split("/")
             print(cordenadas)
@@ -128,11 +141,13 @@ elif(resposta[0] == "auto"):
     #
 
     # Desserializar lista
-    serial = Serial()
+    #serial = Serial()
 
+    '''
     msgSS = ("","")
     while msgSS == ("",""):
-        robo.setAutonomo()
+        
+        
         msgSS = comSS.receber()
         msg = msgSS[0].decode().split("|")
         if(msg[0] == "confirmaMov"):
@@ -161,7 +176,7 @@ elif(resposta[0] == "auto"):
 
                 #Desserializar lista
                 listaDesserealizada = serial.desserializa(listaAtual)
-                dado.getListaDeCacas(listaDesserealizada)
+                dado.setListaDeCacas(listaDesserealizada)
                 robo.atualizaLista(listaDesserealizada)
 
                 #coordenadaAdv = msg[2]
@@ -170,15 +185,21 @@ elif(resposta[0] == "auto"):
 
             # Desserializar lista
             listaDesserealizada = serial.desserializa(listaAtual)
-            dado.getListaDeCacas(listaDesserealizada)
+            dado.setListaDeCacas(listaDesserealizada)
             robo.atualizaLista(listaDesserealizada)
 
     # Desserializar lista
     serial = Serial()
-
-    robo.setAutonomo(ssCom)
-    Tauto = threading.Thread(target= msgTrocada(),args=(dado,robo,ssCom))
+'''
+    #robo.setAutonomo()
+    Tauto = threading.Thread(target= msgTrocada,args=(dado, robo, resposta[0]))
     Tauto.start()
+
+    while True:
+        robo.setAutonomo()
+        print("executando autonomo")
+        globalsFlags.com_event.wait()
+        globalsFlags.com_event.clear()
 
     #msgSS = ("","")
     #while msgSS == ("",""):
@@ -186,18 +207,19 @@ elif(resposta[0] == "auto"):
 elif(resposta[0] == "manual"):
     #Começar Pyro#
     lista = []
-    dados = Dados(coord[0], lista)
-    robo = Robo(dados)
-
+    dados = Dados(coord[0].decode(), lista)
     ssCom = SSCom(comSS, hostSS, dados)
+    robo = Robo(dados, ssCom)
 
-    Tmanual = threading.Thread(target=msgTrocada(),args=(dados,robo,ssCom))
+    print("COORDENADA INICIAL", dados.getCoordenadas().toString())
+
+    Tmanual = threading.Thread(target=msgTrocada, args=(dados, robo, resposta[0]))
     Tmanual.start()
 
-    comSS.rpc(dados,robo)
+    comSS.rpc(dados, robo)
     uri = comSS.getURI()
     print("uri: " + str(uri))
-    comSS.enviar("uri|" + str(uri),hostSS)
+    comSS.enviar("uri|" + str(uri), hostSS)
     comSS.start()
 
-    sscom = SSCom(comSS, hostSS, dados)
+    #sscom = SSCom(comSS, hostSS, dados)

@@ -19,9 +19,8 @@ class Serial:
         i = 0
         lista = []
         coords = string.split("/")
-        print(coords)
         while i < len(coords):
-            coorde = Coordenadas((coords[i][0],coords[i][1]))
+            coorde = Coordenadas((coords[i][0], coords[i][1]))
             lista.append(coorde)
             i += 1
 

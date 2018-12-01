@@ -18,10 +18,13 @@ class SSCom:
 
 
     def setDestino(self,destino):
-        self.com.enviar("destino|" + str(destino.getX()) + str(destino.getY()),self.host)
+        print("SSCOM")
+        self.com.enviar("destino|" + str(destino.getX()) + str(destino.getY()), self.host)
 
-    def setValidar(self, x, y):
-        self.com.enviar("validar|" + str(x) + str(y), self.host)
+    def setValidar(self):
+        print("Enviando coordenadas")
+        self.com.enviar("validar|" + str(self.dados.getCoordenadas().getX())+str(self.dados.getCoordenadas().getY()),
+                        self.host)
 
         '''
         resposta = self.com.receber()

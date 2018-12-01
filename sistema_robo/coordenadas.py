@@ -2,7 +2,7 @@ class Coordenadas():
 
     def __init__(self, coordenadas):
         self.x = int(coordenadas[0])
-        self.y= int(coordenadas[1])
+        self.y = int(coordenadas[1])
         self.orient = ''
         if self.x == 0 and self.y ==0:
             self.orient = "L"
@@ -62,6 +62,48 @@ class Coordenadas():
         elif self.orient == "S":
             self.x = self.x + 1
             self.orient = "L"
+
+
+    def indoPFrente(self):
+        if self.orient == "L":
+            return self.x + 1, self.y
+        elif self.orient == "O":
+            return self.x - 1, self.y
+        elif self.orient == "N":
+            return self.x, self.y + 1
+        elif self.orient == "S":
+            return self.x, self.y -1
+
+    def indoPtras (self):
+        if self.orient == "L":
+            return self.x - 1, self.y
+        elif self.orient == "O":
+            return self.x + 1, self.y
+        elif self.orient == "N":
+            return self.x, self.y - 1
+
+        elif self.orient == "S":
+            return self.x, self.y + 1
+
+    def indoPDireita(self):
+        if self.orient == "L":
+            return self.x, self.y - 1
+        elif self.orient == "O":
+            return self.x, self.y + 1
+        elif self.orient == "N":
+            return self.x + 1, self.y
+        elif self.orient == "S":
+            return self.x - 1, self.y
+
+    def indoPEsquerda(self):
+        if self.orient == "L":
+            return self.x, self.y + 1
+        elif self.orient == "O":
+            return self.x, self.y - 1
+        elif self.orient == "N":
+            return self.x - 1, self.y
+        elif self.orient == "S":
+            return self.x + 1, self.y
 
     def setCoordenada(self, x, y):
         self.x = x

@@ -26,7 +26,7 @@ class Dados:
 
     def setListaDeCacas(self, lista):
         self.lista = lista
-        self.estrategia.atualizaLista(lista)
+        #self.estrategia.atualizaLista(lista)
 
     def getListaDeCacas(self):
         return self.lista
