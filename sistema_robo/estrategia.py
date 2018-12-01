@@ -11,22 +11,34 @@ class Estrategia:
         return self.lista[0]
 
     def ordenaSequenciaCaca(self,coordenadas):
-        i = 0
-        j = 0
 
         listaDeCacas = self.lista
         x_atual = coordenadas.getX()
         y_atual = coordenadas.getY()
 
-        auxDistancia = sqrt(((int(self.lista[0].getX()) - x_atual) ** 2) + ((int(self.lista[0].getY()) - y_atual) ** 2))
+        for x, y in listaDeCacas:
+            listaux[0].append(x)
+            listaux[1].append(y)
+
+        i = 0
 
         while i < (len(listaDeCacas)):
-
-            if auxDistancia > sqrt(((int(self.lista[i].getX()) - x_atual) ** 2) + ((int(self.lista[i].getY()) - y_atual) ** 2)):
-                auxDistancia = sqrt(((int(self.lista[i].getX()) - x_atual) ** 2) + ((int(self.lista[i].getY()) - y_atual) ** 2))
-                j = i
+            auxDistancia = sqrt(((int(listaux[0][i]) - x_atual) ** 2) + ((int(listaux[1][i]) - y_atual) ** 2))
+            listadistancia.append(auxDistancia)
             i = i + 1
 
+        indice = len(listaDeCacas)
+
+        primeira_lista = listaDeCacas
+        segunda_lista = listadistancia
+        tuplas = [(indice, valor) for indice, valor in enumerate(segunda_lista)]
+
+        tuplas.sort(key=lambda x: x[1])
+
+        listaDeCacas = []
+        for indice, valor in tuplas:
+            listafinal.append(primeira_lista[indice])
+        self.lista = listafinal
 
         self.lista = listaDeCacas
 
@@ -86,4 +98,5 @@ class Estrategia:
 
     def atualizaLista(self, lista):
         self.lista = lista
+
 
