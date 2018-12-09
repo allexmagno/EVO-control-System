@@ -25,5 +25,3 @@ Este repositório está organizado da seguinte maneira:
 
 Os robô utilizados no projeto são: [LEGOs Mindstroms
 EV3](https://www.lego.com/en-us/mindstorms/products/mindstorms-ev3-31313)
-
-*Sumario Portas Utilizadas:*
