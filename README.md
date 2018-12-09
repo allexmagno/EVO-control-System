@@ -20,7 +20,7 @@ Este repositório está organizado da seguinte maneira:
 * __Diagramas:__ Contém os arquivos de projeto (astah) dos diagramas de casos de uso, classes e sequência;\
 * __Imagens:__ Contém as imagens exportadas dos diagramas; 
 * __sistema_robo:__ Implementação do sistema robô. Progresso [===========>__] 
-* __sistema_supervisor:__ Implementação do sistema supervisor. Progresso [===========>] 
+* __sistema_supervisor:__ Implementação do sistema supervisor. Progresso [============] 
 * __Sistema_auditor:__ Implementação do sistema Auditor. [===========>__] 
 
 Os robô utilizados no projeto são: [LEGOs Mindstroms
